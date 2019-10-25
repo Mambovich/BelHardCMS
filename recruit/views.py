@@ -51,6 +51,10 @@ def recruiter_base(request):
     return render(request, template_name='recruit/recruiter_base.html', )
 
 
+def recruiter_base(request):
+    return render(request, template_name='recruit/recruiter_base.html', )
+
+
 def base_of_applicants(request):
     # applicants = Client.objects.all()
     own_status = 'all'
