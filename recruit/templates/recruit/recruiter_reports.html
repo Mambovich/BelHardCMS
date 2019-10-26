@@ -1,0 +1,28 @@
+{% extends 'recruit/main_template_recruiter.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    Recruiter reports
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="p-5">
+        <div class="m-5" role="group" aria-label="First group" align="middle">
+            <a href="{% url 'employed_clients_url' %}" class="btn btn-secondary"><h3>Трудоустроенные слушатели</h3></a>
+        </div>
+        <div class="m-5" role="group" aria-label="First group" align="middle">
+            <a href="#" class="btn btn-secondary" ><h3>Нетрудоустроенные слушатели</h3></a>
+        </div>
+        <div class="m-5" role="group" aria-label="First group" align="middle">
+            <a href="#" class="btn btn-secondary" ><h3>Среднее время трудоустройства слушателей</h3></a>
+        </div>
+        <div class="m-5" role="group" aria-label="First group" align="middle">
+            <a href="#" class="btn btn-secondary" ><h3>Выполнение порученных задач</h3></a>
+        </div>
+    </div>
+
+
+
+{% endblock %}

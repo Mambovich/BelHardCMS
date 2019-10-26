@@ -1,0 +1,23 @@
+{% extends 'recruit/main_template_recruiter.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    Employed_clients
+{% endblock %}
+
+{% block content %}
+<div class="p-5">
+    <div class="m-5" role="group" aria-label="First group" align="middle">
+        <h2><u>Количество трудоустроенных слушателей</u></h2>
+    </div>
+        {% for report in reports %}
+
+            <h4>{{ report.starting_period }}</h4>
+            <h4>{{ report.end_period }}</h4>
+            <h4>{{ report.specialty }}</h4>
+            <h4>{{ report.generate_a_report }}</h4>
+
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}
