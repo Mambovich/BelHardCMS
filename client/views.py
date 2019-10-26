@@ -312,7 +312,7 @@ def client_login(request):  # ввести логин/пароль -> зайти
     else:
         return render(request, 'registration.html', res)
     try:
-        user_chat = Chat.objects.get(members=request.user)
+        user_chat = Chat.objects.filter(members=request.user)
     except Chat.DoesNotExist:
         user_chat = Chat.objects.create()
         user_chat.members.add(
