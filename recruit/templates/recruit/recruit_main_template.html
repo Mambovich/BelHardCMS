@@ -57,6 +57,8 @@
                                 <a class="text-bar" href="#">Задачи</a>
                                 <a class="text-bar" href="#">Отчеты</a>
 
+                                <a class="text-bar" href="{% url 'reports_url' %}">Отчеты</a>
+                                <a class="text-bar" href="{% url 'add_task' %}">Добавить задачу</a>
                                 <a class="text-bar" href="{%url 'contact_with_clients' %}"> Сообщения <div class="counter" id="mes_count" hidden="true"> {{ unread_messages }} </div></a>
                                 <div class="client-bar">
                                     <a class="text-client" href="{% url 'recruit_profile' %}" >

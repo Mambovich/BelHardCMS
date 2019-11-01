@@ -41,7 +41,7 @@ class VacancyAdmin(admin.ModelAdmin):
 
 admin.site.register(Vacancy, VacancyAdmin)
 admin.site.register(Help)
-
+admin.site.register(ReportCreation)
 admin.site.register(Opinion)
 admin.site.register(Answer)
 admin.site.register(Chat)

@@ -414,6 +414,18 @@ class FilesForJobInterviews(models.Model):
         verbose_name_plural = 'Файлы'
 
 
+class ReportCreation(models.Model):
+    employed_clients = models.CharField(max_length=100, verbose_name='Трудоустроенные слушатели')
+    unemployed_clients = models.CharField(max_length=100, verbose_name='Нетрудоустроенные слушатели')
+    average_employment_time_for_clients = models.CharField(max_length=100, verbose_name='Среднее время трудоустройства '
+                                                                                        'слушателей')
+    accomplishment_of_assigned_tasks = models.CharField(max_length=100, verbose_name='Выполнение порученных задач')
+    starting_period = models.DateField(null=True, verbose_name='Начальный период')
+    end_period = models.DateField(null=True, verbose_name='Конечный период')
+    specialty = models.CharField(max_length=100, verbose_name='Специальность')
+    generate_a_report = models.BooleanField(default=False, verbose_name='Сформировать')
+
+
 # ########End Poland ##############
 
 
