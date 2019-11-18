@@ -14,7 +14,7 @@ UserModel = get_user_model()
 class Recruiter(models.Model):  # TeamRome
     recruiter = models.OneToOneField(UserModel, on_delete=models.CASCADE)
 
-    patronymic = models.CharField(max_length=100, verbose_name='Отчество', blank=True, null=True)
+    patronymic = models.CharField(max_length=100, verbose_name='Отчество', null=True, blank=True, default='')
     sex = models.ForeignKey(Sex, on_delete=models.SET_NULL, null=True,
                             blank=True)
 
@@ -118,33 +118,6 @@ class RecruitTelephone(models.Model):  # TeamRome
     def __str__(self):
         return self.telephone_number
 
-
-class RecruitPatternClient(models.Model):
-    class Meta:
-        verbose_name = "Шаблоны задач для клиента"
-        verbose_name_plural = "Шаблоны задач для клиента"
-
-    title = models.TextField(max_length=200)
-    comment = models.TextField(max_length=300, blank=True)
-    endtime = models.DateTimeField(blank=True, null=True)
-
-    @property
-    def show_all(self):
-        return self.subtask.all()
-
-    def __str__(self):
-        return "Шаблон для %s" % (self.title)
-
-
-class PatternSubTasks(models.Model):
-    class Meta:
-        verbose_name = "Шаблонная подзадача"
-        verbose_name_plural = "Шаблонные подзадачи"
-
-    title = models.TextField(max_length=100)
-    task = models.ForeignKey(RecruitPatternClient, on_delete=models.CASCADE,
-                             related_name="subtask")
-    status = models.BooleanField(default=True)  # активная задача
 
 
 
