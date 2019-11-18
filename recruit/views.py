@@ -430,9 +430,13 @@ def check_favor(request):
 
         client.is_reserved = False
         client.own_recruiter = None
+        chat = Chat.objects.get(members=client.user_client)
+        chat.members.remove(recruit.recruiter)
     else:
         client.is_reserved = True
         client.own_recruiter = recruit
+        chat = Chat.objects.get(members=client.user_client)
+        chat.members.add(recruit.recruiter)
     client.save()
     return HttpResponse(client_id)
 
