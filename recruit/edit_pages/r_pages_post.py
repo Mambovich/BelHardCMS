@@ -113,11 +113,11 @@ def recruit_experience_page_post(recruit_instance, request):  # TeamRome
         for dic in arr:
             if any(dic.values()):
                 """ If this dictionary hes any values? than take them and save to Exp. instance. """
-                organisation = dic['experience_1']
-                position = dic['experience_3']
-                start_date = dic['exp_date_start']
-                end_date = dic['exp_date_end']
-                duties = dic['experience_4']
+                organisation = dic['name']
+                position = dic['position']
+                start_date = dic['start_date']
+                end_date = dic['end_date']
+                duties = dic['duties']
 
                 experiences = RecruitExperience(
                     recruit_exp=recruit_instance,
@@ -129,7 +129,7 @@ def recruit_experience_page_post(recruit_instance, request):  # TeamRome
                 )
                 experiences.save()
 
-                spheres = dic['experience_2']
+                spheres = dic['sphere']
                 for s in spheres:
                     if s:
                         """ Save ManyToManyField 'sphere' """

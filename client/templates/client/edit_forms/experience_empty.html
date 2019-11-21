@@ -1,33 +1,33 @@
 <div id="origin_div">
     <h3 id="id_exp_h">Опыт работы</h3>
     <div class="form-group">
-        <label for="id_experience_1">Название организации</label>
-        <input type="text" class="form-control" id="id_experience_11" name="experience_11">
+        <label for="id_name">Название организации</label>
+        <input type="text" class="form-control" id="id_name" name="name">
     </div>
     <div class="form-group">
-        <label for="id_experience_2">Область работы (сфера)</label>
-        <select multiple class="form-control" id="id_experience_2"
-                name="experience_21">
+        <label for="id_sphere">Область работы (сфера)</label>
+        <select multiple class="form-control" id="id_sphere"
+                name="sphere">
             {% for i in data.sphere %}
                 <option value="{{ i.id }}">{{ i.sphere_word }}</option>
             {% endfor %}
         </select>
     </div>
     <div class="form-group">
-        <label for="id_experience_3">Должность</label>
-        <input type="text" class="form-control" id="id_experience_3" name="experience_31">
+        <label for="id_position">Должность</label>
+        <input type="text" class="form-control" id="id_position" name="position">
     </div>
     <h5>Период работы:</h5>
     <div class="form-group">
-        <label for="id_exp_date_start">Дата начала</label>
-        <input type="date" class="form-control" id="id_exp_date_start" name="exp_date_start1">
+        <label for="id_start_date">Дата начала</label>
+        <input type="date" class="form-control" id="id_start_date" name="start_date">
     </div>
     <div class="form-group">
-        <label for="id_exp_date_end">Дата окончания</label>
-        <input type="date" class="form-control" id="id_exp_date_end" name="exp_date_end1">
+        <label for="id_end_date">Дата окончания</label>
+        <input type="date" class="form-control" id="id_end_date" name="end_date">
     </div>
     <div class="form-group">
-        <label for="id_experience_4">Обязанности на рабочем месте</label>
-        <input type="text" class="form-control" id="id_experience_4" name="experience_41">
+        <label for="id_duties">Обязанности на рабочем месте</label>
+        <input type="text" class="form-control" id="id_duties" name="duties">
     </div>
 </div>
