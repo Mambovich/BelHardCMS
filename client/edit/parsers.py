@@ -155,5 +155,5 @@ def pars_edu_request(req_post, _file) -> list:  # TeamRome
     """ For loop ends - save temporary dictionary to the output arr. """
     # print("\tdict_up: %s" % dict_up)
     arr.append(dict_up)
-    # print("\tout_arr: %s" % arr)
+    print("\tout_arr: %s" % arr)
     return arr

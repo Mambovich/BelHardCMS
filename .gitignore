@@ -119,3 +119,4 @@ venv.bak/
 .idea/*
 /client/migrations/
 /recruit/migrations/
+/test_db.sqlite3

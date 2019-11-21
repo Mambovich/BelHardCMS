@@ -67,7 +67,7 @@ def education_page_get(client):  # TeamRome
                         for cert in c:
                             cert['img'] = "%s%s" % (MEDIA_URL, cert['img'])
                         e['cert'] = c
-        # print("\tcl_edu: %s" % response['cl_edu'])
+        print("\tcl_edu: %s" % response['cl_edu'])
     return response
 
 

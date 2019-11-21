@@ -1,17 +1,6 @@
-import os
-import sys
-
-import django
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-path = os.path.expanduser(BASE_DIR)
-if path not in sys.path:
-    sys.path.insert(0, path)
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BelHardCRM.settings")
-django.setup()
 
 from client.edit.pages_get import cv_page_get
 from client.edit.utility import time_it
@@ -24,17 +13,17 @@ class ClientEditCVTests(TestCase):
     TEST_USER_PASSWORD = 'test_user'
     TEST_USER_EMAIL = 'test_user'
     TEST_DATA_1 = {'position': 'jun',
-                   'direction': Direction.objects.all()[0].id,  # pre defined array
-                   'employment': Employment.objects.all()[0].id,  # pre defined array
-                   'time_job': TimeJob.objects.all()[0].id,  # pre defined array
+                   'direction': Direction.objects.all().first().id,  # pre defined array
+                   'employment': Employment.objects.all().first().id,  # pre defined array
+                   'time_job': TimeJob.objects.all().first().id,  # pre defined array
                    'salary': '100',
-                   'type_salary': TypeSalary.objects.all()[0].id,  # pre defined array
+                   'type_salary': TypeSalary.objects.all().first().id,  # pre defined array
                    }
 
     TEST_DATA_2 = {'position': '',
                    'direction': '',
                    'employment': '',
-                   'time_job': TimeJob.objects.all()[0].id,
+                   'time_job': TimeJob.objects.all().first().id,
                    'salary': '',
                    'type_salary': '',
                    }
@@ -42,13 +31,13 @@ class ClientEditCVTests(TestCase):
     TEST_DATA_3 = {'position1': '',  # 1
                    'direction1': '',
                    'employment1': '',
-                   'time_job1': TimeJob.objects.all()[0].id,
+                   'time_job1': TimeJob.objects.all().first().id,
                    'salary1': '',
                    'type_salary1': '',
                    'position2': '',  # 2
                    'direction2': '',
                    'employment2': '',
-                   'time_job2': TimeJob.objects.all()[0].id,
+                   'time_job2': TimeJob.objects.all().first().id,
                    'salary2': '',
                    'type_salary2': '',
                    }
