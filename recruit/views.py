@@ -20,8 +20,8 @@ from recruit.edit_pages.r_pages_get import (recruit_edit_page_get,
                                             recruit_experience_page_get,
                                             recruit_education_page_get,
                                             recruit_show_page_get)
-from recruit.edit_pages.r_pages_get import (skills_page_get)
-from recruit.edit_pages.r_pages_post import (photo_page_post, skills_page_post,
+from recruit.edit_pages.r_pages_get import (recruit_skills_page_get)
+from recruit.edit_pages.r_pages_post import (photo_page_post, recruit_skills_page_post,
                                              recruit_education_page_post)
 from recruit.edit_pages.r_pages_post import (recruit_edit_page_post,
                                              recruit_experience_page_post)
@@ -652,13 +652,13 @@ class RecruitEditSkills(TemplateView):  # TeamRome
     def get(self, request, *args, **kwargs):
         recruit_instance = recruit_check(request.user)
         response = {'recruit_img': load_client_img(recruit_instance),
-                    'data': skills_page_get(recruit_instance),
+                    'data': recruit_skills_page_get(recruit_instance),
                     }
         return render(request, self.template_name, response)
 
     def post(self, request):
         recruit_instance = recruit_check(request.user)
-        skills_page_post(recruit_instance, request)
+        recruit_skills_page_post(recruit_instance, request)
         return redirect(to='/recruit/edit')
 
 
@@ -685,7 +685,7 @@ class RecruitShowSkills(TemplateView):  # TeamRome
     def get(self, request, *args, **kwargs):
         recruit_instance = recruit_check(request.user)
         response = {'recruit_img': load_client_img(recruit_instance),
-                    'data': skills_page_get(recruit_instance),
+                    'data': recruit_skills_page_get(recruit_instance),
                     }
         return render(request=request, template_name=self.template_name,
                       context=response)
