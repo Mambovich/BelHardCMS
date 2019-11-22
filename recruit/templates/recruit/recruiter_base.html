@@ -6,24 +6,41 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+       .recruit-base{
+           margin: auto;
+           display: flex;
+           flex-direction: row;
+           justify-content: space-around;
+           }
 
+        .base-button{
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            height: 200px;
+            background: #213D4D;
+            color: #ffffff;
+            text-decoration: none;
+        }
 
-    <div class="p-sm-5 pt-sm-1" align="middle">
-        <div class="container">
-            <div class="btn-group btn-group-lg" align="middle">
-                <a href="{% url "base_of_clients" %}" type="button" class="btn btn-primary" role="button"><h1>
-                    Каоточки<br>соискателей</h1></a>
-                <a href="#" type="button" class="btn btn-primary btn-lg disabled" tabindex="-1" role="button"
-                   aria-disabled="true"><h1>Каоточки<br>работодателей</h1></a>
-                <a href="{% url 'vacancies_url' %}" type="button" class="btn btn-primary" role="button"><h1>
-                    База <br>вакансий</h1></a>
-
-
-
-            </div>
-
-        </div>
+            .base-button:hover{
+                text-decoration: none;
+                color: white;
+                background: #8D7171;
+            }
+            h6 {
+                margin-top: 60px;
+                padding: 0;
+                font-family: "Arial", sans-serif;
+                font-size: 35px;
+                font-weight: bold;
+                }
+</style>
+    <div class="recruit-base">
+        <a class="base-button" href="{% url "base_of_clients" %}"><h6>Карточки<br>соискателей</h6></a>
+        <a class="base-button" href="#"><h6>Карточки<br>работодателей</h6></a>
+        <a class="base-button" href="{% url 'vacancies_url' %}"><h6>База<br>вакансий</h6></a>
     </div>
-
 
 {% endblock %}
