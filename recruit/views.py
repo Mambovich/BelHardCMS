@@ -375,15 +375,27 @@ class change_task(View):
     def get(self, request, id_t):
         task = Tasks.objects.get(id=id_t)
         sub_len = len(task.show_all)
-
-
         return render(request, template_name='recruit/change_client_task.html', context={'task_id': id_t,
                                                                                          'task': task,
                                                                                          'sub_len': sub_len})
 
     def post(self, request, id_t):
+        task = Tasks.objects.get(id=id_t)
+        task_user = task.user
+        client = Client.objects.get(user_client=task_user)
+        task.title = request.POST['task_title']
+        task.comment = str(request.POST['task_comment'])
+        subtasks = task.show_all
+        task.save()
 
-        return HttpResponse('post')
+
+        for sub in subtasks:
+            sub.title = request.POST['subtask_' + str(sub.id)]
+            sub.save()
+
+
+        return redirect(client.get_add_client_task())
+
 
 
 class client_task_adding(View):
@@ -415,12 +427,12 @@ class client_task_adding(View):
             i += 1
             newsubtask.save()
 
-            try:
-                if Settings.objects.get(user=user).email_messages:
-                    send_email = EmailMessage('HR-system', 'У вас новая задача', to=[str(user.email)])
-                    send_email.send()
-            except Exception:
-                print('Exception: нет адреса электронной почты')
+        try:
+            if Settings.objects.get(user=client).email_messages:
+                send_email = EmailMessage('HR-system', 'У вас новая задача', to=[str(client.email)])
+                send_email.send()
+        except Exception:
+            print('Exception: нет адреса электронной почты')
         return redirect(client.get_add_client_task())
 
 # список избранных клиентов, для рекрутера
