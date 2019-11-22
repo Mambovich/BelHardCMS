@@ -42,6 +42,20 @@ class ClientEditCVTests(TestCase):
                    'type_salary2': '',
                    }
 
+    TEST_DATA_4 = {'position1': 'abc',  # 1
+                   'direction1': Direction.objects.all().first().id,
+                   'employment1': Employment.objects.all().first().id,
+                   'time_job1': TimeJob.objects.all().first().id,
+                   'salary1': '111',
+                   'type_salary1': TypeSalary.objects.all().first().id,
+                   'position2': 'def',  # 2
+                   'direction2': Direction.objects.all()[1].id,
+                   'employment2': Employment.objects.all()[1].id,
+                   'time_job2': TimeJob.objects.all()[1].id,
+                   'salary2': '222',
+                   'type_salary2': TypeSalary.objects.all()[1].id,
+                   }
+
     default_select_fields = ["'employment'", "'time_job'", "'type_salary'", "'direction'"]
 
     def setUp(self) -> None:
@@ -142,15 +156,41 @@ class ClientEditCVTests(TestCase):
         response = self.client.post(path=self.url, data=self.TEST_DATA_3)  # saves to DB ????
 
         user_cvs = CV.objects.filter(client_cv=self.client_inst)
-        print(user_cvs.values())
-        count = len(user_cvs)
-        for cv in user_cvs:
+        print("t3_val: %s" % user_cvs.values())
+        for cv, count in zip(user_cvs, range(1, len(user_cvs) + 1)):
             self.assertEqual(cv.position, None)
             self.assertEqual(cv.direction, None)
             self.assertEqual(cv.employment, None)
             self.assertEqual(cv.time_job, TimeJob.objects.get(id=self.TEST_DATA_3['time_job%s' % count]))
             self.assertEqual(cv.salary, None)
             self.assertEqual(cv.type_salary, None)
+
+        self.assertEquals(response.status_code, 302)  # redirect
+
+        cv_arr = cv_page_get(self.client_inst)['cl_cvs']
+        # print(cv_arr)
+        response = self.client.get(self.url)
+        # print(response.context['data']['cl_cvs'])
+        self.assertEqual(response.context['data']['cl_cvs'], cv_arr)
+        self.assertEqual(response.status_code, 200)
+
+    @time_it
+    def test_POST_user_4(self):
+        """ request.POST with LoggedIn User and TEST_DATA_4. """
+        self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
+
+        response = self.client.post(path=self.url, data=self.TEST_DATA_4)  # saves to DB ????
+
+        user_cvs = CV.objects.filter(client_cv=self.client_inst)
+        print("t4_val: %s" % user_cvs.values())
+        for cv, count in zip(user_cvs, range(1, len(user_cvs) + 1)):
+            print(type(cv), count)
+            self.assertEqual(cv.position, self.TEST_DATA_4['position%s' % count])
+            self.assertEqual(cv.direction, Direction.objects.get(id=self.TEST_DATA_4['direction%s' % count]))
+            self.assertEqual(cv.employment, Employment.objects.get(id=self.TEST_DATA_4['employment%s' % count]))
+            self.assertEqual(cv.time_job, TimeJob.objects.get(id=self.TEST_DATA_4['time_job%s' % count]))
+            self.assertEqual(cv.salary, self.TEST_DATA_4['salary%s' % count])
+            self.assertEqual(cv.type_salary, TypeSalary.objects.get(id=self.TEST_DATA_4['type_salary%s' % count]))
 
         self.assertEquals(response.status_code, 302)  # redirect
 

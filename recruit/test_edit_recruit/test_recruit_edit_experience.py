@@ -23,6 +23,38 @@ class RecruiterEditExperienceTests(TestCase):
                    'duties': 'Hello',
                    }
 
+    TEST_DATA_2 = {'name': 'rocket_science_1',
+                   'sphere': '',
+                   'position': '',
+                   'start_date': '',
+                   'end_date': '',
+                   'duties': '',
+                   }
+
+    TEST_DATA_3 = {
+        # 1
+        'name1': 'rocket_science_1',
+        'sphere1': [Sphere.objects.all()[0].id, Sphere.objects.all()[1].id],
+        'position1': 'rocket_science_1',
+        'start_date1': date(2018, 1, 1),
+        'end_date1': date(2018, 2, 2),
+        'duties1': 'rocket_science_1',
+        # 2
+        'name2': 'rocket_science_2',
+        'sphere2': [Sphere.objects.all()[2].id, Sphere.objects.all()[3].id],
+        'position2': 'rocket_science_2',
+        'start_date2': date(2018, 3, 3),
+        'end_date2': date(2018, 4, 4),
+        'duties2': 'rocket_science_2',
+        # 3
+        'name3': 'rocket_science_3',
+        'sphere3': [Sphere.objects.all()[4].id, Sphere.objects.all()[5].id],
+        'position3': 'rocket_science_3',
+        'start_date3': date(2018, 5, 5),
+        'end_date3': date(2018, 6, 6),
+        'duties3': 'rocket_science_3',
+    }
+
     def setUp(self) -> None:
         user = get_user_model()
         self.test_user = user.objects.create_user(self.TEST_USER_USERNAME, self.TEST_USER_EMAIL,
@@ -73,6 +105,46 @@ class RecruiterEditExperienceTests(TestCase):
         self.assertEqual(rec_exp.start_date, self.TEST_DATA_1['start_date'])
         self.assertEqual(rec_exp.end_date, self.TEST_DATA_1['end_date'])
         self.assertEqual(rec_exp.duties, self.TEST_DATA_1['duties'])
+
+        self.assertEquals(response.status_code, 302)  # redirect
+
+    @time_it
+    def test_POST_user_2(self):
+        """ request.POST with LoggedIn User and TEST_DATA_2. """
+        self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
+
+        response = self.client.post(path=self.url, data=self.TEST_DATA_2)
+
+        user_exp = RecruitExperience.objects.get(recruit_exp=self.client_inst)
+
+        self.assertEqual(user_exp.name, self.TEST_DATA_2['name'])
+        self.assertEqual(any(user_exp.sphere.values()), False)
+        self.assertEqual(user_exp.position, None)
+        self.assertEqual(user_exp.start_date, None)
+        self.assertEqual(user_exp.end_date, None)
+        self.assertEqual(user_exp.duties, None)
+
+        self.assertEquals(response.status_code, 302)  # redirect
+
+    @time_it
+    def test_POST_user_3(self):
+        """ request.POST with LoggedIn User and TEST_DATA_3. """
+        self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
+
+        response = self.client.post(path=self.url, data=self.TEST_DATA_3)
+
+        user_exp = RecruitExperience.objects.filter(recruit_exp=self.client_inst)
+        # print(user_exp.values())
+        for ex, count in zip(user_exp, range(1, len(user_exp) + 1)):
+            # print(ex, count)
+            self.assertEqual(ex.name, self.TEST_DATA_3['name%s' % count])
+            if ex.sphere.first():
+                # print("sphere: %s" % ex.sphere.values())
+                self.assertEqual([s['id'] for s in ex.sphere.values()], self.TEST_DATA_3['sphere%s' % count])
+            self.assertEqual(ex.position, self.TEST_DATA_3['position%s' % count])
+            self.assertEqual(ex.start_date, self.TEST_DATA_3['start_date%s' % count])
+            self.assertEqual(ex.end_date, self.TEST_DATA_3['end_date%s' % count])
+            self.assertEqual(ex.duties, self.TEST_DATA_3['duties%s' % count])
 
         self.assertEquals(response.status_code, 302)  # redirect
 

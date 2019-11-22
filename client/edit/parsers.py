@@ -12,28 +12,26 @@ def pars_exp_request(req_post) -> list:  # TeamRome
     arr = []  # output list
     dict_up = {'name': None, 'sphere': None, 'position': None,
                'start_date': None, 'end_date': None, 'duties': None}  # temporary dictionary
-    count = 0  # crutch for detection Client Spheres in several forms
+    count = 1  # crutch for detection Client Spheres in several forms
     for i in dict(req_post).items():
         # print("\ti: %s, %s" % (i[0], i[1]))
-        if re.match('name', i[0]):  # i: experience_11, ['qwe1 qwe1']
+
+        if re.match('name', i[0]):  # 'name1': ['rocket_science_1']
             dict_up['name'] = i[1][0] if i[1][0] else None
 
-        if re.match('sphere', i[0]):  # i: experience_21, ['1', '2']
-            if count:  # if count > 0 ->   getlist('experience_21N')
-                dict_up['sphere'] = req_post.getlist('sphere%s' % count)
-            else:  # if count == 0
-                dict_up['sphere'] = req_post.getlist('sphere')
+        if re.match('sphere', i[0]):  # 'sphere1': ['1', '2']
+            dict_up['sphere'] = req_post.getlist(i[0])
 
-        if re.match('position', i[0]):  # i: experience_31, ['qwe1 qwe1']
+        if re.match('position', i[0]):  # 'position1': ['rocket_science_1'],
             dict_up['position'] = i[1][0] if i[1][0] else None
 
-        if re.match('start_date', i[0]):  # i: exp_date_start1, [''] or exp_date_start1, ['2019-10-06']
+        if re.match('start_date', i[0]):  # 'start_date1': [''] or 'start_date1': ['2018-01-01']
             dict_up['start_date'] = i[1][0] if i[1][0] else None
 
-        if re.match('end_date', i[0]):  # i: exp_date_end1, [''] or exp_date_end1, ['2019-10-17']
+        if re.match('end_date', i[0]):  # 'end_date1': [''] or 'end_date1': ['2018-02-02']
             dict_up['end_date'] = i[1][0] if i[1][0] else None
 
-        if re.match('duties', i[0]):  # i: experience_41, ['qwe1 qwe1']
+        if re.match('duties', i[0]):  # 'duties1': ['rocket_science_1']
             dict_up['duties'] = i[1][0] if i[1][0] else None
 
             """ Конец первого словаря из request.POST. 
@@ -104,7 +102,7 @@ def pars_edu_request(req_post, _file) -> list:  # TeamRome
     for i in dict(req_post).items():
         # print("\ti: %s, %s" % (i[0], i[1]))
 
-        if re.match('institution', i[0]):  # i: institution11, ['rocket_science_1']
+        if re.match('institution', i[0]):  # 'institution': ['rocket_science_1']
 
             if any(dict_up.values()):
                 """ If it is a next Edu. dictionary from POST. Clean all temporary objects. """
@@ -117,22 +115,22 @@ def pars_edu_request(req_post, _file) -> list:  # TeamRome
 
             dict_up['institution'] = i[1][0] if i[1][0] else None
 
-        if re.match('subject_area', i[0]):  # i: subject_area11, ['rocket_science_1']
+        if re.match('subject_area', i[0]):  # 'subject_area': ['rocket_science_1']
             dict_up['subject_area'] = i[1][0] if i[1][0] else None
 
-        if re.match('specialization', i[0]):  # i: specialization11, ['rocket_science_1']
+        if re.match('specialization', i[0]):  # 'specialization': ['rocket_science_1']
             dict_up['specialization'] = i[1][0] if i[1][0] else None
 
-        if re.match('qualification', i[0]):  # i: qualification11, ['rocket_science_1']
+        if re.match('qualification', i[0]):  # 'qualification': ['rocket_science_1']
             dict_up['qualification'] = i[1][0] if i[1][0] else None
 
-        if re.match('date_start', i[0]):  # i: date_start11, ['2019-10-06'] or date_start11, ['']
+        if re.match('date_start', i[0]):  # 'date_start': [''] or 'date_start': ['2018-01-01']
             dict_up['date_start'] = i[1][0] if i[1][0] else None
 
-        if re.match('date_end', i[0]):  # i: date_end11, ['2019-10-23'] or i: date_end11, ['']
+        if re.match('date_end', i[0]):  # 'date_end': [''] or 'date_end': ['2019-11-22']
             dict_up['date_end'] = i[1][0] if i[1][0] else None
 
-        if re.match('certificate_url', i[0]):  # i: certificate_url11, ['http://192.168.0.51:8000/rocket_science_1']
+        if re.match('certificate_url', i[0]):  # 'certificate_url': ['http://127.0.0.1:8000/qwe']
             url = i[1][0] if i[1][0] else None
             img = None
             count_img = 0

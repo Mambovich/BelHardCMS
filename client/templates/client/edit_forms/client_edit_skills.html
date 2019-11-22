@@ -11,16 +11,18 @@
         $(document).ready(function () {
             var origin = $("#id_skill").clone();
             var count = 1;
-
+            var skill_input = $('#id_skill_input');
             $("#add_more").on("click", add);
-            $("#id_skill_input").on("click", data_list);
+            $(skill_input).on("click", data_list);
 
             function add() {
                 {# JS добавления однотипных форм #}
                 var add = origin.clone();
                 count += 1;
-                add.attr('value', $('#id_skill_input').val());
+                add.attr('value', $(skill_input).val());
                 add.appendTo("#div_to_add_new");
+                $(skill_input).attr('value', '');
+                $(skill_input).text('');
             }
 
             function data_list() {

@@ -1,6 +1,5 @@
 from client.edit.edit_forms import UploadImgForm
 from client.edit.parsers import (pars_edu_request, pars_cv_request, pars_exp_request)
-from client.edit.utility import (check_input_str, check_phone)
 from client.edit.utility import (time_it, try_except)
 from client.models import (Skills, Telephone, Sex, Citizenship, FamilyState, Children, City, State, Client, Education,
                            Certificate, CV, Experience, Sphere, Employment, TimeJob, TypeSalary, UserModel, Direction)
@@ -95,7 +94,7 @@ def edit_page_post(client_instance, request):  # TeamRome
     if any(tel):
         Telephone.objects.filter(client_phone=client_instance).delete()
     for t in tel:
-        t = check_phone(t)
+        # t = check_phone(t)
         if t:
             phone = Telephone(
                 client_phone=client,
@@ -118,7 +117,7 @@ def skills_page_post(client_instance, request):  # TeamRome
                 """ ОБЪЕДИНЕНИЕ модуля Навыки с конкретным залогиненым клиентом!!! """
                 skill = Skills(
                     client_skills=client_instance,
-                    skill=check_input_str(s, False)
+                    skill=s,
                 )
                 skill.save()
     else:
@@ -234,7 +233,7 @@ def experience_page_post(client_instance, request):  # TeamRome
                     for s in dic['sphere']:
                         if s:
                             """ Save ManyToManyField 'sphere' """
-                            sp = Sphere.objects.get(id=s)   # TODO: type(s) == str !!!
+                            sp = Sphere.objects.get(id=s)  # type(s) == str !!!
                             sp.save()
                             experiences.sphere.add(sp)
 
