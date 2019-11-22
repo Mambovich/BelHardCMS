@@ -29,6 +29,9 @@ from recruit.edit_pages.r_pages_post import (recruit_edit_page_post,
 from recruit.models import (Recruiter)
 
 from datetime import datetime
+from client.models import *
+from .models import * #TODO fix *
+from .forms import RecruitReportsClientsForm
 
 from .models import *  # TODO fix *
 
@@ -247,6 +250,31 @@ class DelVacancy(View):
         v = Vacancy.objects.get(id=request.POST['id_vac'])
         v.delete()
         return redirect('vacancies_url')
+
+
+def reports(request):
+    return render(request, 'recruit/recruit_reports.html')
+
+
+class EmployedClients(View):
+    def get(self, request):
+        starting_period = request.GET.get('starting_period', '')
+        end_period = request.GET.get('end_period', '')
+        speciality = request.GET.get('speciality', '')
+        print(starting_period)
+        print(end_period)
+        print(speciality)
+        #form = RecruitReportsClientsForm()
+        recruit = Recruiter.objects.get(recruiter=request.user)
+        recruit_clients = client_filtration(request, recruit)
+        context = {
+            'recruit_clients': recruit_clients,
+        }
+        return render(request, 'recruit/recruit_employed_clients.html', context=context)
+
+    def post(self, request):
+        response = request.POST
+        return redirect('employed_clients_url')
 
 
 # End Poland's views #

@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from recruit.models import RecruitReportsClients
+
 from client.models import (SubTasks, CV, Vacancy, Help, Opinion, Answer, Chat,
                            Tasks, Message, Sex, Citizenship,
                            FamilyState, Children, City, EducationWord,
@@ -41,7 +43,7 @@ class VacancyAdmin(admin.ModelAdmin):
 
 admin.site.register(Vacancy, VacancyAdmin)
 admin.site.register(Help)
-admin.site.register(ReportCreation)
+admin.site.register(RecruitReportsClients)
 admin.site.register(Opinion)
 admin.site.register(Answer)
 admin.site.register(Chat)

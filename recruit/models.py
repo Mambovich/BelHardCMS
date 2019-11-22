@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 from client.models import (Sex, Citizenship, FamilyState, Children, City,
-                           State, Sphere)
+                           State, Sphere, Education, CV)
 
 """ PEP 8: Wildcard imports (from <module> import *) should be avoided, 
 as they make it unclear which names are present in the namespace, 
@@ -45,6 +45,7 @@ class Recruiter(models.Model):  # TeamRome
     img = models.ImageField(blank=True, null=True)
     state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True,
                               blank=True)
+    reports_clients = models.ForeignKey(to='RecruitReportsClients', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return "%s %s %s" % (
@@ -117,6 +118,17 @@ class RecruitTelephone(models.Model):  # TeamRome
 
     def __str__(self):
         return self.telephone_number
+
+
+class RecruitReportsClients(models.Model):  #TeamPoland
+    recruit = models.ForeignKey(Recruiter, on_delete=models.CASCADE)
+    starting_period = models.DateField(null=True, blank=True, verbose_name='Начальный период')
+    end_period = models.DateField(blank=True, null=True, verbose_name='Конечный период')
+    specialty = models.ForeignKey(Education, on_delete=models.CASCADE, blank=True, verbose_name='Специальность')
+    generate_a_report = models.BooleanField(default=False, verbose_name='Сформировать отчёт')
+    cv_activation_date = models.ForeignKey(CV, on_delete=models.SET_NULL, blank=True, null=True)
+    date_of_employment = models.DateField(blank=True, null=True, verbose_name='Дата трудоустройства')
+
 
 
 

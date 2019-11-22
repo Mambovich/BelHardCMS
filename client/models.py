@@ -111,6 +111,8 @@ class Education(models.Model):
     date_end = models.DateField(null=True, blank=True,
                                 verbose_name='дата окончания')
 
+    def __str__(self):
+        return self.specialization
 
 class SkillsWord(models.Model):
     """ Список навыков. Заполняется Админом + может вводиться клиентом. """
@@ -357,7 +359,7 @@ class JobInterviews(models.Model):
         for key in self.__dict__:
             if (self.__dict__[key].__class__.__name__ == 'str' or
             self.__dict__[key].__class__.__name__ == 'datetime' or
-            self.__dict__[key].__class__.__name__ == 'time' or 
+            self.__dict__[key].__class__.__name__ == 'time' or
             self.__dict__[key].__class__.__name__ == 'date'):
                 to_show_verbose_name.append(
                     self._meta.get_field(key).verbose_name)

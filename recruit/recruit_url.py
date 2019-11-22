@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.urls import path
-
+from .views import *
 from recruit import views
 from recruit.views import (base_of_applicants, CreateJobInterview,
                            EditJobInterview, DelJobInterview,
@@ -36,6 +36,10 @@ urlpatterns = [
          views.DelJobInterview.as_view(), name='applicant_del_interviews_url'),
 
     path('base/vacancies/', views.Vacancies.as_view(), name='vacancies_url'),
+    path('base/vacancies/<id_v>/', views.VacancyDet.as_view(), name='vacancy_recr_url'),
+    path('base/vacancies/<id_v>/del_vacancy/', views.DelVacancy.as_view(), name='vacancy_del_recr_url'),
+    path('reports/', reports, name='reports_url'),
+    path('reports/employed_clients/', EmployedClients.as_view(), name='employed_clients_url'),
     path('base/vacancies/<id_v>/', views.VacancyDet.as_view(),
          name='vacancy_recr_url'),
     path('base/vacancies/<id_v>/del_vacancy/', views.DelVacancy.as_view(),
