@@ -371,6 +371,21 @@ def check_mes(request):
     return JsonResponse(send, safe=False)
 
 
+class change_task(View):
+    def get(self, request, id_t):
+        task = Tasks.objects.get(id=id_t)
+        sub_len = len(task.show_all)
+
+
+        return render(request, template_name='recruit/change_client_task.html', context={'task_id': id_t,
+                                                                                         'task': task,
+                                                                                         'sub_len': sub_len})
+
+    def post(self, request, id_t):
+
+        return HttpResponse('post')
+
+
 class client_task_adding(View):
 
     def get(self, request, id_a):

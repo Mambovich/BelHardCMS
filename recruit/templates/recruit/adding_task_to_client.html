@@ -36,6 +36,9 @@
         <button class="fortask" id="idfortas{{ tas.id }}">
             {{ tas.title }}
         </button>
+            <a href="{{ tas.change_task }}">изменить</a>
+            <br>
+
             <br>
              <div id="forsubtask{{ tas.id }}" hidden>
                 {% for sub in tas.show_all %}
@@ -48,6 +51,13 @@
         {% endfor %}
 
     </div>
+
+<br><br>=========TEST=============<br><br>
+
+<div>
+    test
+
+</div>
 
 <script>
 

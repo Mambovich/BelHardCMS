@@ -604,6 +604,9 @@ class Tasks(models.Model):
             self.readtask = True
             self.save()
 
+    def change_task(self):
+        return reverse('change_task_url', kwargs={'id_t': self.id})
+
 
 class SubTasks(models.Model):
     title = models.TextField(max_length=100)
