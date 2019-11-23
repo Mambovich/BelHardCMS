@@ -21,7 +21,14 @@ class ClientEditEducationTests(TestCase):
 
     image = Image.open("client/media/user_1.png")
 
-    TEST_DATA_1 = {'institution': 'rocket_science_1',
+    TEST_DATA_1 = {'institution': 'Белорусская государственная академия искусств',
+                   'subject_area': 'rocket_science_1',
+                   'specialization': 'ыаыаыаыаыаыа',
+                   'qualification': 'ваыаыаыав',
+                   'date_start': 'date(2018, 10, 6)',
+                   'date_end': 'date(2018, 10, 7)', }
+
+    TEST_DATA_2 = {'institution': 'rocket_science_1',
                    'subject_area': 'rocket_science_1',
                    'specialization': 'rocket_science_1',
                    'qualification': 'rocket_science_1',
@@ -38,38 +45,77 @@ class ClientEditEducationTests(TestCase):
         self.client_inst = Client.objects.create(user_client=self.test_user)
         self.url = reverse('client_edit_education')
 
+    def test_page_open(self):
+        self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'client/edit_forms/client_edit_education.html')
+
+    def test_POST_no_user(self):
+        """ request.POST without User Login - AnonymousUser. """
+        response = self.client.post(path=self.url, data={})
+        self.assertEqual(response.status_code, 302)
+
+    default_select_fields = []
+
+    def test_GET_no_user(self):
+        response = self.client.get(self.url)
+        self.assertQuerysetEqual(response.context['data'], self.default_select_fields)
+
+    # def test_GET_user(self):
+
+    # self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
+
+    # edu = Education.objects.create(client_edu=self.client_inst,
+    # institution=self.TEST_DATA_2['institution'],
+    # subject_area=self.TEST_DATA_2['subject_area'],
+    # specialization=self.TEST_DATA_2['specialization'],
+    # qualification=self.TEST_DATA_2['qualification'],)
+    # edu_arr = [{'id': edu.id,
+    # 'client_edu_id': self.client_inst.id,
+    # 'institution': self.TEST_DATA_2['institution'],
+    # 'subject_area': self.TEST_DATA_2['subject_area'],
+    # 'specialization': self.TEST_DATA_2['specialization'],
+    # 'qualification': self.TEST_DATA_2['qualification'],
+    # 'date_start': self.TEST_DATA_2['date_start'],
+    # 'date_end': self.TEST_DATA_2['date_end'],}]
+
+    # response = self.client.get(self.url)
+    # self.assertEqual(response.context['data']['cl_edu'], edu_arr)
+    # self.assertEqual(response.status_code, 200)
+
     @time_it
     def test_GET_user(self):
         """ request.GET with data from skills_page_get(client). """
         self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
 
         edu = Education.objects.create(client_edu=self.client_inst,
-                                       institution=self.TEST_DATA_1['institution'],
-                                       subject_area=self.TEST_DATA_1['subject_area'],
-                                       specialization=self.TEST_DATA_1['specialization'],
-                                       qualification=self.TEST_DATA_1['qualification'],
-                                       date_start=self.TEST_DATA_1['date_start'] if self.TEST_DATA_1[
+                                       institution=self.TEST_DATA_2['institution'],
+                                       subject_area=self.TEST_DATA_2['subject_area'],
+                                       specialization=self.TEST_DATA_2['specialization'],
+                                       qualification=self.TEST_DATA_2['qualification'],
+                                       date_start=self.TEST_DATA_2['date_start'] if self.TEST_DATA_2[
                                            'date_start'] else None,
-                                       date_end=self.TEST_DATA_1['date_end'] if self.TEST_DATA_1['date_end'] else None,
+                                       date_end=self.TEST_DATA_2['date_end'] if self.TEST_DATA_2['date_end'] else None,
                                        )
         certificate = Certificate.objects.create(education=edu,
-                                                 link=self.TEST_DATA_1['certificate'][0],
-                                                 img=self.TEST_DATA_1['certificate'][1],
+                                                 link=self.TEST_DATA_2['certificate'][0],
+                                                 img=self.TEST_DATA_2['certificate'][1],
                                                  )
         edu_arr = [{'id': edu.id,
                     'client_edu_id': self.client_inst.id,
-                    'institution': self.TEST_DATA_1['institution'],
-                    'subject_area': self.TEST_DATA_1['subject_area'],
-                    'specialization': self.TEST_DATA_1['specialization'],
-                    'qualification': self.TEST_DATA_1['qualification'],
-                    'date_start': self.TEST_DATA_1['date_start'] if self.TEST_DATA_1[
+                    'institution': self.TEST_DATA_2['institution'],
+                    'subject_area': self.TEST_DATA_2['subject_area'],
+                    'specialization': self.TEST_DATA_2['specialization'],
+                    'qualification': self.TEST_DATA_2['qualification'],
+                    'date_start': self.TEST_DATA_2['date_start'] if self.TEST_DATA_2[
                         'date_start'] else None,
-                    'date_end': self.TEST_DATA_1['date_end'] if self.TEST_DATA_1['date_end'] else None,
+                    'date_end': self.TEST_DATA_2['date_end'] if self.TEST_DATA_2['date_end'] else None,
                     'cert': [{'id': certificate.id,
                               'education_id': certificate.education_id,
                               'img': '/media/' + str(
-                                  self.TEST_DATA_1['certificate'][1] if self.TEST_DATA_1['certificate'][1] else ''),
-                              'link': self.TEST_DATA_1['certificate'][0],
+                                  self.TEST_DATA_2['certificate'][1] if self.TEST_DATA_2['certificate'][1] else ''),
+                              'link': self.TEST_DATA_2['certificate'][0],
                               'show_img': certificate.show_img if certificate.show_img else ''}],
                     }]
         # print("\ttest edu_arr: %s" % edu_arr)
@@ -79,21 +125,21 @@ class ClientEditEducationTests(TestCase):
 
     @time_it
     def test_POST_user(self):
-        """ request.POST with LoggedIn User and TEST_DATA_1. """
+        """ request.POST with LoggedIn User and TEST_DATA_2. """
         self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
 
-        response = self.client.post(path=self.url, data=self.TEST_DATA_1, content_type=MULTIPART_CONTENT)
+        response = self.client.post(path=self.url, data=self.TEST_DATA_2, content_type=MULTIPART_CONTENT)
 
         user_edu = Education.objects.get(client_edu=self.client_inst)
         user_cert = Certificate.objects.get(education=user_edu.id)
 
-        self.assertEqual(user_edu.subject_area, self.TEST_DATA_1['subject_area'])
-        self.assertEqual(user_edu.specialization, self.TEST_DATA_1['specialization'])
-        self.assertEqual(user_edu.qualification, self.TEST_DATA_1['qualification'])
-        self.assertEqual(user_edu.date_start, self.TEST_DATA_1['date_start'])
-        self.assertEqual(user_edu.date_end, self.TEST_DATA_1['date_end'])
-        self.assertEqual(user_cert.img, self.TEST_DATA_1['certificate'][1])
-        self.assertEqual(user_cert.link, self.TEST_DATA_1['certificate'][0])
+        self.assertEqual(user_edu.subject_area, self.TEST_DATA_2['subject_area'])
+        self.assertEqual(user_edu.specialization, self.TEST_DATA_2['specialization'])
+        self.assertEqual(user_edu.qualification, self.TEST_DATA_2['qualification'])
+        self.assertEqual(user_edu.date_start, self.TEST_DATA_2['date_start'])
+        self.assertEqual(user_edu.date_end, self.TEST_DATA_2['date_end'])
+        self.assertEqual(user_cert.img, self.TEST_DATA_2['certificate'][1])
+        self.assertEqual(user_cert.link, self.TEST_DATA_2['certificate'][0])
 
         self.assertEquals(response.status_code, 302)  # redirect
 

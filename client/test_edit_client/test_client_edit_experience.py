@@ -61,6 +61,22 @@ class ClientEditExperienceTests(TestCase):
         self.client_inst = Client.objects.create(user_client=self.test_user)
         self.url = reverse('client_edit_experience')
 
+    def test_page_open(self):
+        self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'client/edit_forms/client_edit_experience.html')
+
+    def test_POST_no_user(self):
+        response = self.client.post(path=self.url, data={})
+        self.assertEqual(response.status_code, 302)
+
+    default_select_fields = ["'sphere'"]
+
+    def test_GET_no_user(self):
+        response = self.client.get(self.url)
+        self.assertQuerysetEqual(response.context['data'], self.default_select_fields)
+
     @time_it
     def test_GET_user(self):
         """ request.GET with data from skills_page_get(client). """

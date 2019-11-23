@@ -35,6 +35,16 @@ class ClientProfileTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'client/client_profile.html')
 
+    def test_POST_no_user(self):  #no
+
+        response = self.client.post(path=self.url, data={})
+        self.assertEqual(response.status_code, 302)
+
+    default_select_fields = []
+
+    def test_GET_no_user(self):
+        response = self.client.get(self.url)
+        self.assertQuerysetEqual(response.context['data'], self.default_select_fields)
 
 if __name__ == "__main__":
     ClientProfileTests()
