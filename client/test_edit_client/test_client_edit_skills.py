@@ -32,6 +32,7 @@ class ClientEditSkillsTests(TestCase):
     def test_GET_nUnD(self):  # no user no data
         response = self.client.get(path=self.url)
         self.assertEqual(any(response.context['data'].values()), False)
+        self.assertEqual(response.status_code, 200)
 
     @time_it
     def test_POST_nUnD(self):  # no user no data
@@ -43,6 +44,7 @@ class ClientEditSkillsTests(TestCase):
         self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
         response = self.client.get(path=self.url)
         self.assertEqual(any(response.context['data'].values()), False)
+        self.assertEqual(response.status_code, 200)
 
     @time_it
     def test_POST_wUnD(self):  # with user no data
