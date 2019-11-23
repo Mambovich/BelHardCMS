@@ -371,6 +371,16 @@ def check_mes(request):
     return JsonResponse(send, safe=False)
 
 
+class pattern_task(View):
+
+    def get(self, request):
+
+        return render(request, template_name='recruit/pattern_task.html')
+
+    def post(self, request):
+        return HttpResponse('this is post')
+
+
 class change_task(View):
     def get(self, request, id_t):
         task = Tasks.objects.get(id=id_t)
@@ -480,9 +490,6 @@ def recruit_base(request):
 
 # функция поиска по списку клиентов, для рекрутера
 def client_filtration(request, own_status):
-    if own_status == 'all':
-        clients_after_search = Client.objects.all()
-        return clients_after_search
     recruit = Recruiter.objects.get(recruiter=request.user)
     search_request = request.GET.get('recruit_search', '')
     clients_after_search = set()
@@ -514,7 +521,9 @@ def client_filtration(request, own_status):
             clients_after_search.update(users_for_last_name)
             clients_after_search.update(users_for_patronymic)
     else:
-
+        if own_status == 'all':
+            clients_after_search = Client.objects.all()
+            return clients_after_search
         clients_after_search = Client.objects.filter(own_recruiter=own_status)
 
     return clients_after_search

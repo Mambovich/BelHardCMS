@@ -57,6 +57,7 @@ urlpatterns = [
     path(r'checkfavor/', views.check_favor, name='check_favor'),
     path(r'client_filtration/', views.client_filtration, name='client_filtration'),
     path('change_task/<id_t>', views.change_task.as_view(), name='change_task_url'),
+    path('pattern_task/', views.pattern_task.as_view(), name='pattern_task_url'),
 
 
     # Team Rome (start)
