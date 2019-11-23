@@ -1,103 +1,125 @@
 {% extends 'recruit/recruit_main_template.html' %}
 
 {% block title %}
-    База пользователей
+База пользователей
 {% endblock %}
 
 {% block content %}
+<section class="recruit_base">
+    <div class="client_rb">
+        <form class="form_rb" action="{% url 'base_of_clients' %}">
+            <input class="search_rb" type="search" name="recruit_search">
+            <input class="sb_small" type="submit" value="Поиск"></input>
+        </form>
 
-<div class="search">
-    <form action="{% url 'base_of_clients' %}">
-        <input type="search" name="recruit_search">
-        <button type="submit">поиск</button>
-    </form>
-</div>
+        <div class="header-list">
+            <p class="header-list-p">Статус</p>
+            <p class="header-list-p">ФИО</p>
+        </div>
+        <div id="client-list" class="panel"
+            style="width: 100%; height: 70%; border: 1px solid black; overflow-y: scroll; border-radius: 10px; padding: 20px 5px; border-top-left-radius: 0;
+             border-top-left-radius: 0;"
+            onscroll="scroll(this); ">
 
-<div id="client-list" class="panel" style="width: 100%; height: 70%; border: 1px solid black; overflow-y: scroll;" onscroll="scroll(this);" >
+            {% for applicant in applicants %}
+            <div class="client_bl card-header">
 
-    <div class="p-sm-5 pt-sm-1">
-        <h2 class="mb-3 offset-md-0"> Выбор соискателя </h2>
-        {% for applicant in applicants %}
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5>
-                        <div>
-                        <a href="{{ applicant.get_absolute_url }}" id="{{ applicant.id }}"> {{ applicant.user_client.first_name }} {{ applicant.user_client.last_name }}  {{ applicant.patronymic }}</a>
-                        <!--<input type="image" infavor="{{ owner_list }}" src='https://image.freepik.com/free-vector/_53876-25533.jpg' class="white_star" id="{{ applicant.id }}" style="width: 32px; height: 32px; opacity: 0.35">-->
-                        {% if applicant.is_reserved %}
-                            {% if applicnat.own_recruit != request.user%}
+                <!--<input type="image" infavor="{{ owner_list }}" src='https://image.freepik.com/free-vector/_53876-25533.jpg' class="white_star" id="{{ applicant.id }}" style="width: 32px; height: 32px; opacity: 0.35">-->
+                {% if applicant.is_reserved %}
+                {% if applicnat.own_recruit != request.user%}
 
-                                    <label for="check_{{ applicant.id }}"><img src="https://image.freepik.com/free-vector/_53876-25533.jpg" class="white_star" id="{{ applicant.id }}" style="width: 32px; height: 32px; "></label>
+                <label for="check_{{ applicant.id }}"><img src="https://image.freepik.com/free-vector/_53876-25533.jpg"
+                        class="white_star" id="{{ applicant.id }}" style="width: 32px; height: 32px; "></label>
 
-                            {% else %}
-                            <input type="checkbox" id="check_{{ applicant.id }}" checked="{{applicant.is_reserved}}" hidden>
-                                <label for="check_{{ applicant.id }}"><img src="https://image.freepik.com/free-vector/_53876-25533.jpg" class="white_star" id="{{ applicant.id }}" style="width: 32px; height: 32px;"></label>
-                            {% endif %}
-                            {% else %}
-                                <input type="checkbox" id="check_{{ applicant.id }}" checked="{{applicant.is_reserved}}" hidden>
-                                <label for="check_{{ applicant.id }}"><img src="https://image.freepik.com/free-vector/_53876-25533.jpg" class="white_star" id="{{ applicant.id }}" style="width: 32px; height: 32px; opacity: 0.35"></label>
-                            {% endif %}
-                        </div>
-                    </h5>
-
-                </div>
-                <div class="card-body">
+                {% else %}
+                <input type="checkbox" id="check_{{ applicant.id }}" checked="{{applicant.is_reserved}}" hidden>
+                <label for="check_{{ applicant.id }}"><img src="https://image.freepik.com/free-vector/_53876-25533.jpg"
+                        class="white_star" id="{{ applicant.id }}" style="width: 32px; height: 32px;"></label>
+                {% endif %}
+                {% else %}
+                <input type="checkbox" id="check_{{ applicant.id }}" checked="{{applicant.is_reserved}}" hidden>
+                <label for="check_{{ applicant.id }}"><img src="https://image.freepik.com/free-vector/_53876-25533.jpg"
+                        class="white_star" id="{{ applicant.id }}"
+                        style="width: 32px; height: 32px; opacity: 0.35"></label>
+                {% endif %}
+                <a class="list-text" href="{{ applicant.get_absolute_url }}" id="{{ applicant.id }}">
+                    {{ applicant.user_client.first_name }} {{ applicant.user_client.last_name }}
+                    {{ applicant.patronymic }}</a>
+                <!-- <div class="card-body">
                     {% if applicant.cv_set.all %}
-                        <b>Список резюме клиента </b><br>
-                        {% for cv in applicant.cv_set.all %}
-                            {{ cv }}<br>
-                        {% endfor %}
+                    <h5>Список резюме клиента </h5><br>
+                    {% for cv in applicant.cv_set.all %}
+                    {{ cv }}<br>
+                    {% endfor %}
                     {% endif %}
 
-                </div>
+                </div> -->
             </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-</div>
+    <div class="rb_but">
+        <a href="#" class="advaced_search_b">
+            Расширенный поиск
+        </a>
+    </div>
+</section>
 
 
-    <script>/*
+
+<script>
+    /*
 
 
         $('document').ready(function () {*/
-            console.log('ready')
+    console.log('ready')
 
-            for (let q = 0; q < {{ owner_range }}; q++){
-            console.log('QWERTY');
+    for (let q = 0; q < {
+            {
+                owner_range
+            }
+        }; q++) {
+        console.log('QWERTY');
 
+
+
+
+    }
+
+    /*spain for favorites */
+    $('.white_star').click(function () {
+        let add = confirm("Вы точно хотите добавить пользователя в избранное?");
+        let client = $(this).attr('id')
+        let recruit = {
+            {
+                request.user.id
+            }
+        }
+        let check = $('#check_' + client).prop('checked')
+        console.log(check)
+        x = $(this)
+        $.ajax({
+            'url': '/recruit/checkfavor/',
+            'data': {
+                'client': client,
+                'recruit': recruit,
+                'check': check,
+            },
+
+            success: function (data) {
+                console.log('data')
+                $(x).animate({
+                    'opacity': '1',
+                });
 
 
 
             }
+        });
+    });
 
-                /*spain for favorites */
-             $('.white_star').click(function () {
-                let add = confirm("Вы точно хотите добавить пользователя в избранное?");
-                let client = $(this).attr('id')
-                let recruit = {{ request.user.id }}
-                let check = $('#check_'+client).prop('checked')
-                console.log(check)
-                x = $(this)
-                $.ajax({
-                    'url': '/recruit/checkfavor/',
-                    'data': {'client': client,
-                            'recruit': recruit,
-                            'check': check,},
-
-                    success: function (data) {
-                        console.log('data')
-                         $(x).animate({
-                        'opacity':'1',
-                        });
-
-
-
-                       }
-                 });
-            });
-
-            /*actions for links*/
-           /* $('.detail_job_seeker').on('click', function () {
+    /*actions for links*/
+    /* $('.detail_job_seeker').on('click', function () {
                 var id = $(this).attr('id');
                 $.ajax({
                     'url': '/client/accept_reject/',
@@ -128,6 +150,5 @@
 
 
         }) */
-
-    </script>
+</script>
 {% endblock %}
