@@ -61,7 +61,7 @@
 .client_bl{
     display: flex;
     flex-direction: row;
-    justify-content: left;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -84,4 +84,19 @@
     font-weight: bold;
     text-decoration: none;
     margin-left: 40px;
+}
+
+.status{
+    padding: 10px;
+    border-radius: 5px;
+    border: solid 1px;
+}
+
+.card-link{
+    background-color: rgba(33, 61, 77, 1);
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
 }

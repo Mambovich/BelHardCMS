@@ -12,19 +12,15 @@
             <input class="sb_small" type="submit" value="Поиск"></input>
         </form>
 
-        <div class="header-list">
-            <p class="header-list-p">Статус</p>
-            <p class="header-list-p">ФИО</p>
-        </div>
+        
         <div id="client-list" class="panel"
-            style="width: 100%; height: 70%; border: 1px solid black; overflow-y: scroll; border-radius: 10px; padding: 20px 5px; border-top-left-radius: 0;
-             border-top-left-radius: 0;"
+            style="width: 100%; height: 70%; border: 1px solid black; overflow-y: scroll; border-radius: 10px; padding: 20px 5px;"
             onscroll="scroll(this); ">
 
             {% for applicant in applicants %}
             <div class="client_bl card-header">
 
-                <!--<input type="image" infavor="{{ owner_list }}" src='https://image.freepik.com/free-vector/_53876-25533.jpg' class="white_star" id="{{ applicant.id }}" style="width: 32px; height: 32px; opacity: 0.35">-->
+               <!--  <input type="image" infavor="{{ owner_list }}" src='https://image.freepik.com/free-vector/_53876-25533.jpg' class="white_star" id="{{ applicant.id }}" style="width: 32px; height: 32px; opacity: 0.35">
                 {% if applicant.is_reserved %}
                 {% if applicnat.own_recruit != request.user%}
 
@@ -41,10 +37,13 @@
                 <label for="check_{{ applicant.id }}"><img src="https://image.freepik.com/free-vector/_53876-25533.jpg"
                         class="white_star" id="{{ applicant.id }}"
                         style="width: 32px; height: 32px; opacity: 0.35"></label>
-                {% endif %}
+                {% endif %} -->
                 <a class="list-text" href="{{ applicant.get_absolute_url }}" id="{{ applicant.id }}">
                     {{ applicant.user_client.first_name }} {{ applicant.user_client.last_name }}
                     {{ applicant.patronymic }}</a>
+
+                <p class="status">{{ applicant.state.state_word }}</p>
+                <a class="card-link" href="">Карточка</a>
                 <!-- <div class="card-body">
                     {% if applicant.cv_set.all %}
                     <h5>Список резюме клиента </h5><br>
