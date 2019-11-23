@@ -3,13 +3,12 @@ from collections import defaultdict
 from datetime import datetime
 
 from BelHardCRM.settings import MEDIA_URL
-from client.edit.utility import (time_it, try_except)
+from client.edit.utility import (try_except)
 from client.models import (Sex, Citizenship, FamilyState, Children, City, State, Telephone, Skills, Education,
                            Certificate, CV, Experience, Employment, TimeJob, TypeSalary, UserModel, Sphere, Direction)
 
 
 @try_except
-@time_it
 def edit_page_get(client):  # TeamRome
     """ views.py ClientEditMain(TemplateView) GET method.
     Загрузка из БД списков для выбора данных клиента. """
@@ -37,7 +36,6 @@ def edit_page_get(client):  # TeamRome
 
 
 @try_except
-@time_it
 def skills_page_get(client):  # TeamRome
     """" views.py ClientEditSkills(TemplateView) GET method.  """
     response = defaultdict()
@@ -48,7 +46,6 @@ def skills_page_get(client):  # TeamRome
 
 
 @try_except
-@time_it
 def education_page_get(client):  # TeamRome
     """" views.py ClientEditEducation(TemplateView) GET method.  """
     response = defaultdict()
@@ -72,7 +69,6 @@ def education_page_get(client):  # TeamRome
 
 
 @try_except
-@time_it
 def cv_page_get(client):  # TeamRome
     """" views.py ClientEditCv(TemplateView) GET method. """
     response = defaultdict()
@@ -89,7 +85,6 @@ def cv_page_get(client):  # TeamRome
 
 
 @try_except
-@time_it
 def experience_page_get(client):  # TeamRome
     """" views.py ClientEditExperience(TemplateView) GET method. """
     response = defaultdict()
@@ -106,7 +101,6 @@ def experience_page_get(client):  # TeamRome
 
 
 @try_except
-@time_it
 def show_profile(client):  # TeamRome
     response = defaultdict()
 

@@ -10,7 +10,6 @@ from recruit.models import (RecruitExperience, UserModel, RecruitTelephone, Recr
 
 
 @try_except
-@time_it
 def recruit_edit_page_get(recruit):  # TeamRome
     """ views.py RecruitEditMain(TemplateView) GET method.
     Загрузка из БД списков для выбора данных Recruit. """
@@ -39,7 +38,6 @@ def recruit_edit_page_get(recruit):  # TeamRome
 
 
 @try_except
-@time_it
 def recruit_experience_page_get(recruit):  # TeamRome
     response = defaultdict()
     response['sphere'] = Sphere.objects.all()
@@ -55,7 +53,6 @@ def recruit_experience_page_get(recruit):  # TeamRome
 
 
 @try_except
-@time_it
 def recruit_skills_page_get(recruit):  # TeamRome
     response = defaultdict()
     if recruit:
@@ -66,7 +63,6 @@ def recruit_skills_page_get(recruit):  # TeamRome
 
 
 @try_except
-@time_it
 def recruit_education_page_get(recruit):  # TeamRome
     response = defaultdict()
     if recruit:
@@ -88,7 +84,6 @@ def recruit_education_page_get(recruit):  # TeamRome
 
 
 @try_except
-@time_it
 def recruit_show_page_get(recruit):  # TeamRome
     response = defaultdict()
 

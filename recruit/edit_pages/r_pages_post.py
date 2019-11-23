@@ -1,6 +1,6 @@
 from client.edit.edit_forms import UploadImgForm
 from client.edit.parsers import (pars_exp_request, pars_edu_request)
-from client.edit.utility import (time_it, try_except)
+from client.edit.utility import (try_except)
 from client.models import (Sphere, Sex, Citizenship, FamilyState, Children, City, State)
 from recruit.models import (RecruitExperience, UserModel, Recruiter, RecruitTelephone, RecruitEducation,
                             RecruitCertificate)
@@ -8,7 +8,6 @@ from recruit.models import (RecruitSkills)
 
 
 @try_except
-@time_it
 def recruit_edit_page_post(recruit_instance, request):  # TeamRome
     """ views.py RecruitEditMain(TemplateView) POST method. """
     """ Входные данные для сохранения: """
@@ -102,7 +101,6 @@ def recruit_edit_page_post(recruit_instance, request):  # TeamRome
 
 
 @try_except
-@time_it
 def recruit_experience_page_post(recruit_instance, request):  # TeamRome
     """" views.py ClientEditExperience(TemplateView) POST method. """
     arr = pars_exp_request(request.POST)  # list of dictionaries
@@ -142,7 +140,6 @@ def recruit_experience_page_post(recruit_instance, request):  # TeamRome
         print('\tExperience Parser is Empty')
 
 
-@time_it
 def recruit_skills_page_post(recruit_instance, request):  # TeamRome
     skills_arr = request.POST.getlist('skill') if request.POST.getlist('skill') else None
 
@@ -161,7 +158,6 @@ def recruit_skills_page_post(recruit_instance, request):  # TeamRome
 
 
 @try_except
-@time_it
 def photo_page_post(recruit_instance, request):  # TeamRome
     if recruit_instance:
         form = UploadImgForm(request.POST, request.FILES)
@@ -172,7 +168,6 @@ def photo_page_post(recruit_instance, request):  # TeamRome
 
 
 @try_except
-@time_it
 def recruit_education_page_post(recruit_instance, request):  # TeamRome
     arr_edu = pars_edu_request(request.POST, request.FILES)  # list of dictionaries
 

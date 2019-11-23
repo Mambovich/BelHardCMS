@@ -1,12 +1,11 @@
 from client.edit.edit_forms import UploadImgForm
 from client.edit.parsers import (pars_edu_request, pars_cv_request, pars_exp_request)
-from client.edit.utility import (time_it, try_except)
+from client.edit.utility import (try_except)
 from client.models import (Skills, Telephone, Sex, Citizenship, FamilyState, Children, City, State, Client, Education,
                            Certificate, CV, Experience, Sphere, Employment, TimeJob, TypeSalary, UserModel, Direction)
 
 
 @try_except
-@time_it
 def edit_page_post(client_instance, request):  # TeamRome
     """ views.py ClientEditMain(TemplateView) POST method. """
     """ Входные данные для сохранения: """
@@ -104,7 +103,6 @@ def edit_page_post(client_instance, request):  # TeamRome
 
 
 @try_except
-@time_it
 def skills_page_post(client_instance, request):  # TeamRome
     """" views.py ClientEditSkills(TemplateView) POST method.  """
     skills_arr = request.POST.getlist('skill') if request.POST.getlist('skill') else None
@@ -125,7 +123,6 @@ def skills_page_post(client_instance, request):  # TeamRome
 
 
 @try_except
-@time_it
 def photo_page_post(client_instance, request):  # TeamRome
     """" views.py ClientEditPhoto(TemplateView) POST method.
     В БД сохраняется УНИКАЛЬНОЕ имя картинки (пр: user_2_EntrmQR.png) в папке MEDIA_URL = '/media/' """
@@ -137,7 +134,6 @@ def photo_page_post(client_instance, request):  # TeamRome
 
 
 @try_except
-@time_it
 def education_page_post(client_instance, request):  # TeamRome
     """" views.py ClientEditEducation(TemplateView) POST method.  """
     arr_edu = pars_edu_request(request.POST, request.FILES)  # list of dictionaries
@@ -176,7 +172,6 @@ def education_page_post(client_instance, request):  # TeamRome
 
 
 @try_except
-@time_it
 def cv_page_post(client_instance, request):  # TeamRome
     """" views.py ClientEditCv(TemplateView) POST method. """
     if client_instance:
@@ -208,7 +203,6 @@ def cv_page_post(client_instance, request):  # TeamRome
 
 
 @try_except
-@time_it
 def experience_page_post(client_instance, request):  # TeamRome
     """" views.py ClientEditExperience(TemplateView) POST method. """
     arr = pars_exp_request(request.POST)  # list of dictionaries
