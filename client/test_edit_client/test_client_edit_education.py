@@ -63,26 +63,25 @@ class ClientEditEducationTests(TestCase):
         self.assertQuerysetEqual(response.context['data'], self.default_select_fields)
 
     # def test_GET_user(self):
-
-    # self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
-
-    # edu = Education.objects.create(client_edu=self.client_inst,
-    # institution=self.TEST_DATA_2['institution'],
-    # subject_area=self.TEST_DATA_2['subject_area'],
-    # specialization=self.TEST_DATA_2['specialization'],
-    # qualification=self.TEST_DATA_2['qualification'],)
-    # edu_arr = [{'id': edu.id,
-    # 'client_edu_id': self.client_inst.id,
-    # 'institution': self.TEST_DATA_2['institution'],
-    # 'subject_area': self.TEST_DATA_2['subject_area'],
-    # 'specialization': self.TEST_DATA_2['specialization'],
-    # 'qualification': self.TEST_DATA_2['qualification'],
-    # 'date_start': self.TEST_DATA_2['date_start'],
-    # 'date_end': self.TEST_DATA_2['date_end'],}]
-
-    # response = self.client.get(self.url)
-    # self.assertEqual(response.context['data']['cl_edu'], edu_arr)
-    # self.assertEqual(response.status_code, 200)
+    #     self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
+    #
+    #     edu = Education.objects.create(client_edu=self.client_inst,
+    #                                    institution=self.TEST_DATA_2['institution'],
+    #                                    subject_area=self.TEST_DATA_2['subject_area'],
+    #                                    specialization=self.TEST_DATA_2['specialization'],
+    #                                    qualification=self.TEST_DATA_2['qualification'], )
+    #     edu_arr = [{'id': edu.id,
+    #                 'client_edu_id': self.client_inst.id,
+    #                 'institution': self.TEST_DATA_2['institution'],
+    #                 'subject_area': self.TEST_DATA_2['subject_area'],
+    #                 'specialization': self.TEST_DATA_2['specialization'],
+    #                 'qualification': self.TEST_DATA_2['qualification'],
+    #                 'date_start': self.TEST_DATA_2['date_start'],
+    #                 'date_end': self.TEST_DATA_2['date_end'], }]
+    #
+    #     response = self.client.get(self.url)
+    #     self.assertEqual(response.context['data']['cl_edu'], edu_arr)
+    #     self.assertEqual(response.status_code, 200)
 
     @time_it
     def test_GET_user(self):
