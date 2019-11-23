@@ -32,10 +32,18 @@ class RecruiterProfileTests(TestCase):
         self.assertEqual(any(response.context['data'].values()), False)
 
     @time_it
-    def test_GET_wUnD(self):  # with user no data
+    def test_GET_WUnD(self):  # no user no data
         self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
         response = self.client.get(path=self.url)
-        self.assertEqual(any(response.context['data'].values()), True)
+        # self.assertEqual(any(response.context['data'].values()), False)
+        self.assertEqual(response.context['data']['r_edu_profile'], [])
+        self.assertEqual(response.context['data']['r_exp_profile'], [])
+        self.assertEqual(response.context['data']['r_skill_profile'], [])
+        self.assertEqual(response.context['data']['user_model'],
+                         {'first_name': '', 'last_name': '', 'email': 'test_user'})
+        self.assertEqual(response.context['data']['r_phone'], [])
+        self.assertEqual(response.context['data']['age'], None)
+        self.assertEqual(response.context['data']['recruit'].recruiter.email, self.TEST_USER_EMAIL)
 
 
 if __name__ == "__main__":

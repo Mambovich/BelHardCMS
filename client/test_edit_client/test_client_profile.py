@@ -1,18 +1,8 @@
-import os
-import sys
-
-import django
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-path = os.path.expanduser(BASE_DIR)
-if path not in sys.path:
-    sys.path.insert(0, path)
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BelHardCRM.settings")
-django.setup()
-
+from client.edit.utility import time_it
 from client.models import Client
 
 
@@ -29,22 +19,34 @@ class ClientProfileTests(TestCase):
         self.recruit_inst = Client.objects.create(user_client=self.test_user)
         self.url = reverse('client_profile')
 
+    @time_it
     def test_page_open(self):
         self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'client/client_profile.html')
 
-    def test_POST_no_user(self):  #no
+    @time_it
+    def test_GET_nUnD(self):  # no user no data
+        response = self.client.get(path=self.url)
+        self.assertEqual(any(response.context['data'].values()), False)
+        # self.assertEqual(response.context['data'], False)
 
-        response = self.client.post(path=self.url, data={})
-        self.assertEqual(response.status_code, 302)
+    @time_it
+    def test_GET_WUnD(self):  # no user no data
+        self.client.login(username=self.TEST_USER_USERNAME, password=self.TEST_USER_PASSWORD)
+        response = self.client.get(path=self.url)
+        # self.assertEqual(any(response.context['data'].values()), False)
+        self.assertEqual(response.context['data']['cl_edu_profile'], [])
+        self.assertEqual(response.context['data']['cl_exp_profile'], [])
+        self.assertEqual(response.context['data']['cl_cvs_profile'], [])
+        self.assertEqual(response.context['data']['cl_skill_profile'], [])
+        self.assertEqual(response.context['data']['user_model'],
+                         {'first_name': '', 'last_name': '', 'email': 'test_user'})
+        self.assertEqual(response.context['data']['cl_phone'], [])
+        self.assertEqual(response.context['data']['age'], None)
+        self.assertEqual(response.context['data']['client'].user_client.email, self.TEST_USER_EMAIL)
 
-    default_select_fields = []
-
-    def test_GET_no_user(self):
-        response = self.client.get(self.url)
-        self.assertQuerysetEqual(response.context['data'], self.default_select_fields)
 
 if __name__ == "__main__":
     ClientProfileTests()

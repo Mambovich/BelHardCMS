@@ -4,8 +4,8 @@ from client.edit.utility import try_except, time_it
 from client.models import Client
 
 
-@try_except
-@time_it
+# @try_except
+# @time_it
 def client_check(some_one):  # TeamRome
     """ список карточек c id клиента.
     Список Юзеров с зарегистрированной карточкой клиента. """
@@ -26,7 +26,7 @@ def client_check(some_one):  # TeamRome
         return None
 
 
-@try_except
+# @try_except
 def load_client_img(client):  # TeamRome
     """ Show Client Img in the Navigation Bar.
     Img loaded from DB, if user do not have img - load default. """
