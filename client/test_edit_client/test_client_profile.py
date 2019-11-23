@@ -47,6 +47,10 @@ class ClientProfileTests(TestCase):
         self.assertEqual(response.context['data']['age'], None)
         self.assertEqual(response.context['data']['client'].user_client.email, self.TEST_USER_EMAIL)
 
+    def test_GET_no_user(self):
+        response = self.client.get(self.url)
+        self.assertQuerysetEqual(response.context['data'], [])
+
 
 if __name__ == "__main__":
     ClientProfileTests()
