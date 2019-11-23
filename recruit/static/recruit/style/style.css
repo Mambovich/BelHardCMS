@@ -129,6 +129,7 @@ body{
 .footer-bar{
     background-color: #e8e6e6;
     width: 100%;
+    max-width: 1334px;
     height: 90px;
     display: flex;
     justify-content: space-between;
