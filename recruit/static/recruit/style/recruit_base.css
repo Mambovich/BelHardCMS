@@ -1,7 +1,7 @@
 .recruit_base {
     display: flex;
     justify-content: space-between;
-    font-display: row;
+    flex-display: row;
     padding: 25px 60px;
     height: 100%;
 }
@@ -9,7 +9,6 @@
 .client_rb {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 60%;
 }
 
@@ -37,7 +36,7 @@
     background-color: rgba(33, 61, 77, 1);
     border-radius: 20px;
     padding: 50px 10px;
-    font-size: 40px;
+    font-size: 20px;
     text-decoration: none;
     font-weight: bold;
     color: white;
@@ -52,7 +51,7 @@
 }
 
 .form_rb {
-    margin-bottom: 50px;
+    margin-bottom: 25px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
