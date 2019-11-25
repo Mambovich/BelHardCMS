@@ -26,7 +26,12 @@
 </form>
 
 <br><br>----ТЕСТ----<br><br>
-    <a href="{%  url 'pattern_task_url' %}">Добавить шаблонную задачу</a>
+
+    <form action="{% url 'pattern_task_url' %}">
+        <input type="text" name="user_id" value="{{ client.id }}" hidden>
+        <button type="submit">валера</button>
+
+    </form>
 
 <br><br>----ТЕСТ----<br><br>
 

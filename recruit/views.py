@@ -371,11 +371,29 @@ def check_mes(request):
     return JsonResponse(send, safe=False)
 
 
+########################################################################################
+########################################################################################
+########################################################################################
+def use_as_pattern(request): # TODO убрать
+    client_id = request.GET['user_id']
+    pattern_tasks = RecruitPatternClient.objects.all()
+
+    return render(request, template_name='recruit/pattern_task.html', context={'client_id': client_id,
+                                                                               'pattern_tasks': pattern_tasks})
+
+########################################################################################
+########################################################################################
+########################################################################################
+
+
 class pattern_task(View):
 
     def get(self, request):
+        client_id = request.GET['user_id']
+        pattern_tasks = RecruitPatternClient.objects.all()
 
-        return render(request, template_name='recruit/pattern_task.html')
+        return render(request, template_name='recruit/pattern_task.html', context={'client_id': client_id,
+                                                                                   'pattern_tasks': pattern_tasks})
 
     def post(self, request):
         return HttpResponse('this is post')

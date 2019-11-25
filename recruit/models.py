@@ -120,6 +120,9 @@ class RecruitTelephone(models.Model):  # TeamRome
 
 
 class RecruitPatternClient(models.Model):
+    class Meta:
+        verbose_name = "Шаблоны задач для клиента"
+        verbose_name_plural = "Шаблоны задач для клиента"
 
     title = models.TextField(max_length=200)
     comment = models.TextField(max_length=300, blank=True)
@@ -129,8 +132,15 @@ class RecruitPatternClient(models.Model):
     def show_all(self):
         return self.subtask.all()
 
+    def __str__(self):
+        return "Шаблон для %s" % (self.title)
+
 
 class PatternSubTasks(models.Model):
+    class Meta:
+        verbose_name = "Шаблонная подзадача"
+        verbose_name_plural = "Шаблонные подзадачи"
+
     title = models.TextField(max_length=100)
     task = models.ForeignKey(RecruitPatternClient, on_delete=models.CASCADE,
                              related_name="subtask")
