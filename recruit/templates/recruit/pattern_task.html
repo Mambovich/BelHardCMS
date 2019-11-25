@@ -2,33 +2,63 @@
 {% block content %}
 ТЕСОЫЫВфывф   {{ client_id }}
 <br>
-    <form action="{% url 'use_as_pattern_url' %}">
+    <form action="" method="post">
         {% csrf_token %}
-        <input type="text" name="user_id" value="{{ client_id }}">
+        <input type="text" name="user_id" value="{{ client_id }}" hidden>
         <br>
-        <select>
+        <select name="pattern_task">
             {% for pattern in pattern_tasks %}
-                <option>{{ pattern }}</option>
+                <option>{{ pattern.title }}</option>
             {% endfor %}
         </select>
         <br>
-        <button type="submit">жмяк</button>
+        <button name="form1" type="submit">жмяк</button>
     </form>
 <br>
 <br>
-<form action="{{ applicant_user.get_add_client_task}}" method="post">
+{% if check == 1 %}
+<form name="test1"  action="" method="post">
     {% csrf_token %}
     <div>
-
+            <input type="text" name="user_id" value="{{ client_id }}" hidden>
             <label for="task_title">Шаблонная задача:</label><br>
-            <input type="text" name="task_title" id="task_title"><br>
 
+            <input type="text" name="task_title" id="task_title"><br>
             <label for="task_comment">Комментарий к задаче</label><br>
+
             <input type="text" name="task_comment" id="task_comment"><br>
             <label for="task_subtask1">Заданые подзадачи</label><br>
+
             <div id="origin1">
-                <input type="text" name="task_subtask1" id="task_subtask_q"><br>
+                <input type="text" name="task_subtask1" id="task_subtask_q">
+                <br>
             </div>
+
+            <div class="put_here"></div>
+
+            <input  type="button" value="Добавить еще подзадачу" id="add_more_tasks">
+
+            <input name="form2"  type="submit" value="Назначить задачу">
+    </div>
+</form>
+{% endif %}
+{% if check == 2 %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div>
+            <label for="task_title">Изменить заголовок задачи:</label><br>
+            <input type="text" name="task_title" id="task_title" value="{{ task.title }}">
+            <br>
+
+            <label for="task_comment">Изменить комментарий к задаче</label><br>
+            <input type="text" name="task_comment" id="task_comment" value="{{ task.comment }}">
+            <br>
+            <label >Изменить подзадачи</label><br>
+            {% for sub in task.show_all %}
+
+                <input type="text" name="subtask_{{ sub.id }}" id="task_subtask_q" value="{{ sub.title }}">
+                <br>
+            {% endfor %}
             <div class="put_here">
 
             </div>
@@ -36,8 +66,24 @@
             <input type="button" value="Добавить еще подзадачу" id="add_more_tasks">
 
 
-            <input type="submit" value="Назначить задачу">
+            <input name="form2" type="submit" value="Назначить задачу">
 
     </div>
 </form>
+
+{% endif %}
+
+<script>
+    $(document).ready(function () {
+            let count = 2;
+
+            $("#add_more_tasks").on("click", function () {
+                let origin ='<div id="origin1"><input type="text" name="task_subtask'+ count +'"id="task_subtask_q"><br></div>';
+                $('.put_here').append(origin);
+                count++;
+                console.log(count);
+            });
+    })
+
+</script>
 {% endblock %}

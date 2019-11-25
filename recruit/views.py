@@ -391,12 +391,53 @@ class pattern_task(View):
     def get(self, request):
         client_id = request.GET['user_id']
         pattern_tasks = RecruitPatternClient.objects.all()
+        check = 1
 
         return render(request, template_name='recruit/pattern_task.html', context={'client_id': client_id,
-                                                                                   'pattern_tasks': pattern_tasks})
+                                                                                   'pattern_tasks': pattern_tasks,
+                                                                                   'check': check})
 
     def post(self, request):
-        return HttpResponse('this is post')
+        if 'form1' in request.POST:
+            client_id = request.POST['user_id']
+            client = Client.objects.get(id=client_id)
+            pattern_tasks = RecruitPatternClient.objects.all()
+            chosen_task = RecruitPatternClient.objects.get(title=request.POST['pattern_task'])
+            chosen_id = chosen_task.id
+            check = 2
+            return render(request, template_name='recruit/pattern_task.html', context={'client_id': client_id,
+                                                                                       'pattern_tasks': pattern_tasks,
+                                                                                       'check': check,
+                                                                                       'task': chosen_task,
+                                                                                       'task_id': chosen_id})
+
+        if 'form2' in request.POST:
+            client = Client.objects.get(id=request.POST['user_id'])
+            client_user = client.user_client
+            newtask = Tasks.objects.create()
+            newtask.user = client_user
+            newtask.title = request.POST['task_title']
+            newtask.comment = str(request.POST['task_comment'])
+            newtask.save()
+            i = 1
+            reqpost = request.POST
+            while True:
+                try:
+                    newsubtask = SubTasks(title=reqpost['task_subtask' + str(i)], task=newtask)
+                except:
+                    break
+                i += 1
+                newsubtask.save()
+
+            try:
+                if Settings.objects.get(user=client).email_messages:
+                    send_email = EmailMessage('HR-system', 'У вас новая задача', to=[str(client.email)])
+                    send_email.send()
+            except Exception:
+                print('Exception: нет адреса электронной почты')
+            return redirect(client.get_add_client_task())
+        else:
+            return HttpResponse('ОШИБКА В НАЗВАНИИ ФФОРЫФ')
 
 
 class change_task(View):
