@@ -397,23 +397,52 @@ class pattern_task(View):
                                                                                        'task_id': chosen_id})
 
         if 'form2' in request.POST:
-           # return HttpResponse('test area')
+            # return HttpResponse('test area')
             client = Client.objects.get(id=request.POST['user_id'])
             client_user = client.user_client
+
             newtask = Tasks.objects.create()
             newtask.user = client_user
             newtask.title = request.POST['task_title']
             newtask.comment = str(request.POST['task_comment'])
             newtask.save()
+
             i = 1
             reqpost = request.POST
-            while True:
+
+            pattern_id = request.POST['pattern_used']
+            pattern = RecruitPatternClient.objects.get(id=pattern_id)
+            all_subs = pattern.show_all
+
+            i = 1
+            reqpost = request.POST
+            for sub in all_subs:
                 try:
-                    newsubtask = SubTasks(title=reqpost['task_subtask' + str(i)], task=newtask)
+                    sub_text = request.POST['subtask_' + str(sub.id)]
+                    newsubtask = SubTasks(title=sub_text, task=newtask)
+                    # newsubtask = SubTasks(title=reqpost['subtask_' + str(sub.id)], task=newtask)
+                    print('first', sub, str('subtask_' + str(sub.id)))
                 except:
-                    break
-                i += 1
+                    try:
+                        i += 1
+                        print('i:', i)
+                        newsubtask = SubTasks(title=reqpost['task_subtask' + str(i)], task=newtask)
+                    except:
+                        break
                 newsubtask.save()
+                print(str(newsubtask))
+
+
+
+
+
+            # while True:
+            #     try:
+            #         newsubtask = SubTasks(title=reqpost['task_subtask' + str(i)], task=newtask)
+            #     except:
+            #         break
+            #     i += 1
+            #     newsubtask.save()
 
             try:
                 if Settings.objects.get(user=client).email_messages:
