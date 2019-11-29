@@ -404,7 +404,6 @@ class pattern_task(View):
                                                                                        'client_activ_tasks': client_activ_tasks})
 
         if 'form2' in request.POST:
-            # return HttpResponse('test area')
             client = Client.objects.get(id=request.POST['user_id'])
             client_user = client.user_client
 
@@ -420,11 +419,10 @@ class pattern_task(View):
                 all_subs = pattern.show_all
 
                 reqpost = request.POST
-                for sub in all_subs: # изменить сначала цикл изменения шаблонных потом присоед
+                for sub in all_subs: # изменить шаблонные
                     try:
                         sub_text = request.POST['subtask_' + str(sub.id)]
                         newsubtask = SubTasks(title=sub_text, task=newtask)
-                        # newsubtask = SubTasks(title=reqpost['subtask_' + str(sub.id)], task=newtask)
                         print('first', sub, str('subtask_' + str(sub.id)))
                     except:
                         try:
@@ -437,24 +435,20 @@ class pattern_task(View):
                     print(str(newsubtask))
             except:
                 pass
-                # return HttpResponse('EXCEPT')
 
-            i = 1
+            i = 0
             while True: # добавление новых
                 i += 1
-                if i != 1:
-                    try:
-                        # return HttpResponse('task_subtask' + str(i))
-                        sub_text = request.POST['task_subtask' + str(i)]
-                        newsubtask = SubTasks(title=sub_text, task=newtask)
-
-                    except:
+                try:
+                    # return HttpResponse('task_subtask' + str(i))
+                    sub_text = request.POST['task_subtask' + str(i)]
+                    newsubtask = SubTasks(title=sub_text, task=newtask)
+                except:
+                    if i == 1:
+                        continue
+                    else:
                         break
-
                 newsubtask.save()
-
-
-
 
             try:
                 if Settings.objects.get(user=client).email_messages:
