@@ -374,18 +374,24 @@ def check_mes(request):
 class pattern_task(View):
 
     def get(self, request):
-        client_id = request.GET['user_id']
+        client_id = request.GET['user_id'] # id КЛИЕНТА
         pattern_tasks = RecruitPatternClient.objects.all()
         check = 1
+        client_ac = Client.objects.get(id=client_id)
+        client_user = client_ac.user_client
+        client_activ_tasks = Tasks.objects.filter(user=client_user, status=False)
 
         return render(request, template_name='recruit/pattern_task.html', context={'client_id': client_id,
                                                                                    'pattern_tasks': pattern_tasks,
-                                                                                   'check': check})
+                                                                                   'check': check,
+                                                                                   'client_activ_tasks': client_activ_tasks})
 
     def post(self, request):
         if 'form1' in request.POST:
             client_id = request.POST['user_id']
-            client = Client.objects.get(id=client_id)
+            client_ac = Client.objects.get(id=client_id)
+            client_user = client_ac.user_client
+            client_activ_tasks = Tasks.objects.filter(user=client_user, status=False)
             pattern_tasks = RecruitPatternClient.objects.all()
             chosen_task = RecruitPatternClient.objects.get(title=request.POST['pattern_task'])
             chosen_id = chosen_task.id
@@ -394,7 +400,8 @@ class pattern_task(View):
                                                                                        'pattern_tasks': pattern_tasks,
                                                                                        'check': check,
                                                                                        'task': chosen_task,
-                                                                                       'task_id': chosen_id})
+                                                                                       'task_id': chosen_id,
+                                                                                       'client_activ_tasks': client_activ_tasks})
 
         if 'form2' in request.POST:
             # return HttpResponse('test area')

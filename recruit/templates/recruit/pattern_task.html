@@ -72,6 +72,29 @@
 </form>
 
 {% endif %}
+<br>
+<button class="client_activ_tasks">Показать активные задачи пользователя</button>
+    <div class="activ_tasks" name="activ_tasks" hidden>
+        {% for tas in client_activ_tasks %}
+
+        <button class="fortask" id="idfortas{{ tas.id }}">
+            {{ tas.title }}
+        </button>
+            <a href="{{ tas.change_task }}">изменить</a>
+            <br>
+
+            <br>
+             <div id="forsubtask{{ tas.id }}" hidden>
+                {% for sub in tas.show_all %}
+                    {{ sub.title }}
+                 <br>
+                {% endfor %}
+
+
+            </div><hr>
+        {% endfor %}
+
+    </div>
 
 <script>
     $(document).ready(function () {
@@ -82,6 +105,16 @@
                 $('.put_here').append(origin);
                 count++;
                 console.log(count);
+            });
+
+            $('.client_activ_tasks').on('click', function () {
+                let tasks = $('.activ_tasks')
+                if( tasks.is(":hidden")){
+                    $(tasks).show()
+                }
+                else {
+                      $(tasks).hide()
+                }
             });
     })
 
