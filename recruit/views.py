@@ -383,6 +383,7 @@ class pattern_task(View):
 
         return render(request, template_name='recruit/pattern_task.html', context={'client_id': client_id,
                                                                                    'pattern_tasks': pattern_tasks,
+                                                                                   'client': client_user,
                                                                                    'check': check,
                                                                                    'client_activ_tasks': client_activ_tasks})
 
