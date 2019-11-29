@@ -1,7 +1,8 @@
+import logging
 import re
 from time import perf_counter
 
-from client.edit.log_color import (log_info, log_verbose, log_error)
+from client.edit.log_color import (log_info, log_verbose)
 
 
 def check_input_str(string: str, title=True) -> str or None:  # TeamRome
@@ -14,7 +15,7 @@ def check_input_str(string: str, title=True) -> str or None:  # TeamRome
         else:
             return string
     else:
-        log_error("\tcheck_input_str() Fail: %s" % string)
+        logger_me().error("\tcheck_input_str() Fail: %s" % string)
         return None
 
 
@@ -24,7 +25,7 @@ def check_telegram(string: str) -> str or None:  # TeamRome
         log_info("\tcheck_telegram(): %s" % string)
         return string
     else:
-        log_error("\tcheck_telegram() Fail: %s" % string)
+        logger_me().error("\tcheck_telegram() Fail: %s" % string)
         return None
 
 
@@ -34,7 +35,7 @@ def check_home_number(string: str) -> str or None:  # TeamRome
         log_info("\tcheck_home_number(): %s" % string)
         return string
     else:
-        log_error("\tcheck_home_number() Fail: %s" % string)
+        logger_me().error("\tcheck_home_number() Fail: %s" % string)
         return None
 
 
@@ -44,7 +45,7 @@ def check_phone(phone: str) -> str or None:  # TeamRome
         log_info("\tcheck_phone(): %s" % phone)
         return phone
     else:
-        log_error("\tcheck_phone() Fail: %s" % phone)
+        logger_me().error("\tcheck_phone() Fail: %s" % phone)
         return None
 
 
@@ -55,7 +56,7 @@ def try_except(foo):  # TeamRome
         try:
             return foo(*args, **kwargs)
         except Exception as ex:
-            log_error("\tException in - %s()\n\t%s" % (foo.__name__, ex))
+            logger_me().exception("Exception in - %s()\n\t%s" % (foo.__name__, ex))
             return None
 
     return wrapper
@@ -72,3 +73,24 @@ def time_it(foo):  # TeamRome
         return result
 
     return wrapper
+
+
+def logger_me():
+    # create logger with 'spam_application'
+    logger = logging.getLogger('logger_edit_forms')
+    logger.setLevel(logging.INFO)
+    # create file handler which logs even debug messages
+    fh = logging.FileHandler('logger_edit_forms.log')
+    fh.setLevel(logging.INFO)
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.ERROR)
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    ch.setFormatter(formatter)
+    # add the handlers to the logger
+    logger.addHandler(fh)
+    logger.addHandler(ch)
+
+    return logger

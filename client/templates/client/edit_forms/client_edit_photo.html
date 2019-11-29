@@ -13,7 +13,7 @@
             <div class="my-2">
                 <h3>Upload Your Photo</h3>
                 <p>Ваше теккущее фото:
-                    <img src="{{ client_img }}" alt="img" class="m-2" height="64">
+                    <img src="{{ client_img|default:'' }}" alt="img" class="m-2" height="64">
                 </p>
                 <p>Выберите файл для изменения {{ form }}</p>
             </div>

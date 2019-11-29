@@ -111,35 +111,30 @@ def recruit_experience_page_post(recruit_instance, request):  # TeamRome
         for dic in arr:
             if any(dic.values()):
                 """ If this dictionary hes any values? than take them and save to Exp. instance. """
-                organisation = dic['name']
-                position = dic['position']
-                start_date = dic['start_date']
-                end_date = dic['end_date']
-                duties = dic['duties']
-
                 experiences = RecruitExperience(
                     recruit_exp=recruit_instance,
-                    name=organisation,
-                    position=position,
-                    start_date=start_date,
-                    end_date=end_date,
-                    duties=duties,
+                    name=dic['name'],
+                    position=dic['position'],
+                    start_date=dic['start_date'],
+                    end_date=dic['end_date'],
+                    duties=dic['duties'],
                 )
                 experiences.save()
 
-                spheres = dic['sphere']
-                for s in spheres:
-                    if s:
-                        """ Save ManyToManyField 'sphere' """
-                        sp = Sphere.objects.get(id=s)
-                        sp.save()
-                        experiences.sphere.add(sp)
+                if dic['sphere']:
+                    for s in dic['sphere']:
+                        if s:
+                            """ Save ManyToManyField 'sphere' """
+                            sp = Sphere.objects.get(id=s)
+                            sp.save()
+                            experiences.sphere.add(sp)
             else:
                 print('\tExperience Form is Empty')
     else:
         print('\tExperience Parser is Empty')
 
 
+@try_except
 def recruit_skills_page_post(recruit_instance, request):  # TeamRome
     skills_arr = request.POST.getlist('skill') if request.POST.getlist('skill') else None
 
@@ -176,32 +171,25 @@ def recruit_education_page_post(recruit_instance, request):  # TeamRome
         for edus in arr_edu:
             if any(edus.values()):
 
-                institution = edus['institution']
-                subject_area = edus['subject_area']
-                specialization = edus['specialization']
-                qualification = edus['qualification']
-                date_start = edus['date_start']
-                date_end = edus['date_end']
-                cert_arr = edus['certificate']
-
                 education = RecruitEducation(
                     recruit_edu=recruit_instance,
-                    institution=institution,
-                    subject_area=subject_area,
-                    specialization=specialization,
-                    qualification=qualification,
-                    date_start=date_start,
-                    date_end=date_end,
+                    institution=edus['institution'],
+                    subject_area=edus['subject_area'],
+                    specialization=edus['specialization'],
+                    qualification=edus['qualification'],
+                    date_start=edus['date_start'],
+                    date_end=edus['date_end'],
                 )
                 education.save()
 
-                for c in cert_arr:  # array of tuples
-                    certificate = RecruitCertificate(
-                        education=education,
-                        img=c[1],
-                        link=c[0],
-                    )
-                    certificate.save()
+                if edus['certificate']:
+                    for c in edus['certificate']:  # array of tuples
+                        certificate = RecruitCertificate(
+                            education=education,
+                            img=c[1],
+                            link=c[0],
+                        )
+                        certificate.save()
 
                 # print("\tEducation Form - OK:\n\t", institution, subject_area, specialization, qualification,
                 #       date_start, date_end, cert_arr)

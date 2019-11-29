@@ -7,11 +7,11 @@ from client.edit.utility import (try_except)
 def pars_exp_request(req_post) -> list:  # TeamRome
     """ Опасно для глаз!!! Быдло-код !!!
     Парсит QueryDict == request.POST в список из нескольких словарей, отсортированных по полям модели Experience. """
-    print("\texp_request.POST: %s" % req_post)
-    arr = []  # output list
+    print("pars_exp_request.POST: %s" % req_post)
+    out_arr = []  # output list
     dict_up = {'name': None, 'sphere': None, 'position': None,
                'start_date': None, 'end_date': None, 'duties': None}  # temporary dictionary
-    count = 1  # crutch for detection Client Spheres in several forms
+
     for i in dict(req_post).items():
         # print("\ti: %s, %s" % (i[0], i[1]))
 
@@ -35,22 +35,22 @@ def pars_exp_request(req_post) -> list:  # TeamRome
 
             """ Конец первого словаря из request.POST. 
             Сохраняем временный словарь в массив. Обнуляем временный словарь. """
-            arr.append(dict_up)
+            if any(dict_up.values()):
+                out_arr.append(dict_up)
             # print("\tdict_up: %s" % dict_up)
             dict_up = {'name': None, 'sphere': None, 'position': None,
                        'start_date': None, 'end_date': None, 'duties': None}
-            count += 1
             # print('\t----')
-    print("\tout_arr: %s" % arr)
-    return arr
+    print("\tout_arr (%s): %s" % (len(out_arr), out_arr))
+    return out_arr
 
 
 @try_except
 def pars_cv_request(req_post: dict) -> list:  # TeamRome
     """ Опасно для глаз!!! Быдло-код !!!
     Парсит QueryDict == request.POST в список из нескольких словарей, отсортированных по полям модели CV. """
-    print("exp_request.POST: %s" % req_post)
-    arr = []
+    print("pars_cv_request.POST: %s" % req_post)
+    out_arr = []
     dict_up = {'position': None, 'direction': None, 'employment': None, 'time_job': None, 'salary': None,
                'type_salary': None}
     for i in req_post.items():
@@ -75,22 +75,23 @@ def pars_cv_request(req_post: dict) -> list:  # TeamRome
             dict_up['type_salary'] = i[1] if i[1] else None
 
             # print(dict_up)
-            arr.append(dict_up)
+            if any(dict_up.values()):
+                out_arr.append(dict_up)
             dict_up = {'position': None, 'direction': None, 'employment': None, 'time_job': None, 'salary': None,
                        'type_salary': None}
             # print('----')
 
-    print("arr: %s" % arr)
-    return arr
+    print("\tout_arr (%s): %s" % (len(out_arr), out_arr))
+    return out_arr
 
 
 @try_except
 def pars_edu_request(req_post, _file) -> list:  # TeamRome
     """ Опасно для глаз!!! Быдло-код !!!
     Парсит QueryDict == request.POST в список из нескольких словарей, отсортированных по полям модели Education. """
-    print("\texp_request.POST: %s" % req_post)
-    print("\texp_request.FILE: %s" % _file)
-    arr = []  # output list
+    print("\tpars_edu_request.POST: %s" % req_post)
+    print("\tpars_edu_request.FILE: %s" % _file)
+    out_arr = []  # output list
     dict_up = {'institution': None, 'subject_area': None, 'specialization': None, 'qualification': None,
                'date_start': None, 'date_end': None, 'certificate': None}  # temporary dictionary
     count_cert = 0  # crutch for detection Edu. Certificates in several forms
@@ -105,7 +106,7 @@ def pars_edu_request(req_post, _file) -> list:  # TeamRome
                 """ If it is a next Edu. dictionary from POST. Clean all temporary objects. """
                 cert_arr = []
                 # print("\tdict_up: %s" % dict_up)
-                arr.append(dict_up)
+                out_arr.append(dict_up)
                 dict_up = {'institution': None, 'subject_area': None, 'specialization': None, 'qualification': None,
                            'date_start': None, 'date_end': None, 'certificate': None}
                 # print('\t----')
@@ -136,7 +137,7 @@ def pars_edu_request(req_post, _file) -> list:  # TeamRome
             for f in dict(_file).items():
                 count_img += 1
                 if count_img == count_cert:
-                    """ URL and Img gos in pairs. 
+                    """ URL and Img goes in pairs. 
                     So we need to compare url № and take img with this number:
                     1st url and 1st img, than 2d url and 2d img from FILE dictionary. """
                     # print("\tf: %s, %s" % (f[0], f[1]))
@@ -149,6 +150,7 @@ def pars_edu_request(req_post, _file) -> list:  # TeamRome
 
     """ For loop ends - save temporary dictionary to the output arr. """
     # print("\tdict_up: %s" % dict_up)
-    arr.append(dict_up)
-    print("\tout_arr: %s" % arr)
-    return arr
+    if any(dict_up.values()):
+        out_arr.append(dict_up)
+    print("\tout_arr (%s): %s" % (len(out_arr), out_arr))
+    return out_arr

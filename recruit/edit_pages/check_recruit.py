@@ -1,5 +1,4 @@
-from client.edit.log_color import (log_info, log_error)
-from client.edit.utility import (try_except, time_it)
+from client.edit.utility import (try_except, logger_me)
 from recruit.models import (Recruiter)
 
 
@@ -20,5 +19,5 @@ def recruit_check(some_one):  # TeamRome
         # log_info("\trecruit_id: %s" % recruit.id)
         return recruit
     else:
-        log_error('\tRecruit profile DO NOT exists!')
+        logger_me().error('\tRecruit profile DO NOT exists!')
         return None

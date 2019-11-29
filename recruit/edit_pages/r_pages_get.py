@@ -3,7 +3,7 @@ import datetime
 from collections import defaultdict
 
 from BelHardCRM.settings import MEDIA_URL
-from client.edit.utility import (time_it, try_except)
+from client.edit.utility import (try_except)
 from client.models import (Sphere, Sex, Citizenship, FamilyState, Children, City, State)
 from recruit.models import (RecruitExperience, UserModel, RecruitTelephone, RecruitEducation, RecruitCertificate,
                             RecruitSkills)
@@ -30,8 +30,7 @@ def recruit_edit_page_get(recruit):  # TeamRome
             "last_name": user_model.last_name,
             "email": user_model.email,
         }
-        phone_arr = [i.telephone_number for i in RecruitTelephone.objects.filter(recruit_phone=recruit)]
-        response['recruit_phone'] = phone_arr
+        response['recruit_phone'] = [i.telephone_number for i in RecruitTelephone.objects.filter(recruit_phone=recruit)]
         response['recruit'] = recruit
 
     return response
@@ -56,8 +55,7 @@ def recruit_experience_page_get(recruit):  # TeamRome
 def recruit_skills_page_get(recruit):  # TeamRome
     response = defaultdict()
     if recruit:
-        skills_arr = [i['skill'] for i in RecruitSkills.objects.filter(recruit_skills=recruit).values()]
-        response['rec_skill'] = skills_arr
+        response['rec_skill'] = [i['skill'] for i in RecruitSkills.objects.filter(recruit_skills=recruit).values()]
 
     return response
 

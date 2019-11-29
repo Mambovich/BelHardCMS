@@ -1,6 +1,5 @@
 from BelHardCRM.settings import MEDIA_URL
-from client.edit.log_color import (log_info, log_error)
-from client.edit.utility import try_except
+from client.edit.utility import try_except, logger_me
 from client.models import Client
 
 
@@ -21,7 +20,7 @@ def client_check(some_one):  # TeamRome
         # log_info("\tclient_id: %s" % client.id)
         return client
     else:
-        log_error('\tClient profile DOES NOT exists!')
+        logger_me().error('\tClient profile DOES NOT exists!')
         return None
 
 

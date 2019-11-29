@@ -75,7 +75,7 @@
                             <label for="id_institution">Учебное заведение</label>
                             <input type="text" class="form-control" id="id_institution{{ forloop.counter }}"
                                    name="institution{{ forloop.counter }}"
-                                   value="{{ edu.institution }}" list="data_list{{ forloop.counter }}">
+                                   value="{{ edu.institution|default:'' }}" list="data_list{{ forloop.counter }}">
                             <datalist id="data_list{{ forloop.counter }}">
                                 <option id="dl_option" value=""></option>
                             </datalist>
@@ -108,19 +108,19 @@
                             <label for="id_subject_area">Предметная область</label>
                             <input type="text" class="form-control" id="id_subject_area"
                                    name="subject_area{{ forloop.counter }}"
-                                   value="{{ edu.subject_area }}">
+                                   value="{{ edu.subject_area|default:'' }}">
                         </div>
                         <div class="form-group">
                             <label for="id_specialization">Специальность</label>
                             <input type="text" class="form-control" id="id_specialization"
                                    name="specialization{{ forloop.counter }}"
-                                   value="{{ edu.specialization }}">
+                                   value="{{ edu.specialization|default:'' }}">
                         </div>
                         <div class="form-group">
                             <label for="id_qualification">Квалификация</label>
                             <input type="text" class="form-control" id="id_qualification"
                                    name="qualification{{ forloop.counter }}"
-                                   value="{{ edu.qualification }}">
+                                   value="{{ edu.qualification|default:'' }}">
                         </div>
                         <p>Период обучения:</p>
                         <div class="form-group">
@@ -145,18 +145,18 @@
                                 <div id="cert_origin{{ forloop.counter }}">
                                     <div class="form-group">
                                         <label for="id_certificate_img">Сертификат (img)</label>
-                                        <img src="{{ c.img }}" alt="img" class="m-2" height="64">
+                                        <img src="{{ c.img|default:'' }}" alt="img" class="m-2" height="64">
                                         <input type="file" class="form-control" id="id_certificate_img"
                                                name="certificate_img
                                                        {{ forloop.parentloop.counter }}{{ forloop.counter }}"
-                                               value="{{ c.img.name }}">
+                                               value="{{ c.img.name|default:'' }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="id_certificate_url">Сертификат (ссылка)</label>
                                         <input type="url" class="form-control" id="id_certificate_url"
                                                name="certificate_url
                                                        {{ forloop.parentloop.counter }}{{ forloop.counter }}"
-                                               value="{{ c.link }}">
+                                               value="{{ c.link|default:'' }}">
                                     </div>
                                 </div>
 

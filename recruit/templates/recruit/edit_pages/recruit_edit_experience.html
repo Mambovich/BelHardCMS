@@ -56,7 +56,7 @@
                             <label for="id_name">Название организации</label>
                             <input type="text" class="form-control" id="id_name"
                                    name="name{{ forloop.counter }}"
-                                   value="{{ exp.name }}">
+                                   value="{{ exp.name|default:'' }}">
                         </div>
 
                         <div class="form-group">
@@ -65,7 +65,7 @@
                                     name="sphere{{ forloop.counter }}">
                                 {% for i in data.sphere %}
                                     <option value="{{ i.id }}"
-                                            {% for cl_sp in exp.sphere %}{% if i.sphere_word  ==  cl_sp %}selected
+                                            {% for rec_sp in exp.sphere %}{% if i.sphere_word  ==  rec_sp %}selected
                                             {% endif %}{% endfor %}>
                                         {{ i.sphere_word }}</option>
                                 {% endfor %}
@@ -76,7 +76,7 @@
                             <label for="id_position">Должность</label>
                             <input type="text" class="form-control" id="id_position"
                                    name="position{{ forloop.counter }}"
-                                   value="{{ exp.position }}">
+                                   value="{{ exp.position|default:'' }}">
                         </div>
 
                         <h5>Период работы:</h5>
@@ -99,7 +99,7 @@
                             <label for="id_duties">Обязанности на рабочем месте</label>
                             <input type="text" class="form-control" id="id_duties"
                                    name="duties{{ forloop.counter }}"
-                                   value="{{ exp.duties }}">
+                                   value="{{ exp.duties|default:'' }}">
                         </div>
 
                     </div>
