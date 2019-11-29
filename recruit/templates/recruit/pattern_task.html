@@ -19,6 +19,7 @@
 {% if check == 1 %}
 <form name="test1"  action="" method="post">
     {% csrf_token %}
+    ЧЕК 1
     <div>
             <input type="text" name="user_id" value="{{ client_id }}" hidden>
             <label for="task_title">Шаблонная задача:</label><br>
@@ -45,6 +46,7 @@
 {% if check == 2 %}
 <form action="" method="post">
     {% csrf_token %}
+    ЧЕК 2
     <div>
             <input type="text" name="user_id" value="{{ client_id }}" hidden>
             <input type="text" name="pattern_used" value="{{ task_id }}" hidden>

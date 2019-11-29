@@ -414,30 +414,47 @@ class pattern_task(View):
             newtask.comment = str(request.POST['task_comment'])
             newtask.save()
 
-            i = 1
-            reqpost = request.POST
+            try: # если использован шаблон
+                pattern_id = request.POST['pattern_used']
+                pattern = RecruitPatternClient.objects.get(id=pattern_id)
+                all_subs = pattern.show_all
 
-            pattern_id = request.POST['pattern_used']
-            pattern = RecruitPatternClient.objects.get(id=pattern_id)
-            all_subs = pattern.show_all
-
-            i = 1
-            reqpost = request.POST
-            for sub in all_subs:
-                try:
-                    sub_text = request.POST['subtask_' + str(sub.id)]
-                    newsubtask = SubTasks(title=sub_text, task=newtask)
-                    # newsubtask = SubTasks(title=reqpost['subtask_' + str(sub.id)], task=newtask)
-                    print('first', sub, str('subtask_' + str(sub.id)))
-                except:
+                reqpost = request.POST
+                for sub in all_subs: # изменить сначала цикл изменения шаблонных потом присоед
                     try:
-                        i += 1
-                        print('i:', i)
-                        newsubtask = SubTasks(title=reqpost['task_subtask' + str(i)], task=newtask)
+                        sub_text = request.POST['subtask_' + str(sub.id)]
+                        newsubtask = SubTasks(title=sub_text, task=newtask)
+                        # newsubtask = SubTasks(title=reqpost['subtask_' + str(sub.id)], task=newtask)
+                        print('first', sub, str('subtask_' + str(sub.id)))
+                    except:
+                        try:
+                            i += 1
+                            print('i:', i)
+                            newsubtask = SubTasks(title=reqpost['task_subtask' + str(i)], task=newtask)
+                        except:
+                            break
+                    newsubtask.save()
+                    print(str(newsubtask))
+            except:
+                pass
+                # return HttpResponse('EXCEPT')
+
+            i = 1
+            while True: # добавление новых
+                i += 1
+                if i != 1:
+                    try:
+                        # return HttpResponse('task_subtask' + str(i))
+                        sub_text = request.POST['task_subtask' + str(i)]
+                        newsubtask = SubTasks(title=sub_text, task=newtask)
+
                     except:
                         break
+
                 newsubtask.save()
-                print(str(newsubtask))
+
+
+
 
             try:
                 if Settings.objects.get(user=client).email_messages:
