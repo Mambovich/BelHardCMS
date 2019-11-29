@@ -439,18 +439,6 @@ class pattern_task(View):
                 newsubtask.save()
                 print(str(newsubtask))
 
-
-
-
-
-            # while True:
-            #     try:
-            #         newsubtask = SubTasks(title=reqpost['task_subtask' + str(i)], task=newtask)
-            #     except:
-            #         break
-            #     i += 1
-            #     newsubtask.save()
-
             try:
                 if Settings.objects.get(user=client).email_messages:
                     send_email = EmailMessage('HR-system', 'У вас новая задача', to=[str(client.email)])
