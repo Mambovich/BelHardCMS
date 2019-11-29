@@ -12,7 +12,7 @@
             {% endfor %}
         </select>
         <br>
-        <button name="form1" type="submit">жмяк</button>
+        <button name="form1" type="submit">Применить в качестве шаблона</button>
     </form>
 <br>
 <br>
@@ -57,6 +57,7 @@
             <label for="task_comment">Изменить комментарий к задаче</label><br>
             <input type="text" name="task_comment" id="task_comment" value="{{ task.comment }}">
             <br>
+
             <label >Изменить подзадачи</label><br>
             {% for sub in task.show_all %}
 
@@ -66,7 +67,6 @@
             <div class="put_here"></div>
 
             <input type="button" value="Добавить еще подзадачу" id="add_more_tasks">
-
 
             <input name="form2" type="submit" value="Назначить задачу">
 
@@ -84,18 +84,14 @@
         </button>
             <a href="{{ tas.change_task }}">изменить</a>
             <br>
-
             <br>
              <div id="forsubtask{{ tas.id }}" hidden>
                 {% for sub in tas.show_all %}
                     {{ sub.title }}
                  <br>
                 {% endfor %}
-
-
             </div><hr>
         {% endfor %}
-
     </div>
 
 <script>

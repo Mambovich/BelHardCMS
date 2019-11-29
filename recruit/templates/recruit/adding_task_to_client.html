@@ -1,45 +1,38 @@
 {% extends 'recruit/recruit_main_template.html' %}
 {% block content %}
-<form action="{{ applicant_user.get_add_client_task}}" method="post">
-    {% csrf_token %}
-    <div>
+<article>Активные задачи клиента {{ client }}</article>
+<form action="{% url 'pattern_task_url' %}">
+    <input type="text" name="user_id" value="{{ client.id }}" hidden>
+    <button type="submit">Назначить задачу</button>
 
-            <label for="task_title">Заголовок задачи:</label><br>
-            <input type="text" name="task_title" id="task_title"><br>
-
-            <label for="task_comment">Комментарий к задаче</label><br>
-            <input type="text" name="task_comment" id="task_comment"><br>
-            <label for="task_subtask1">Задать подзадачи</label><br>
-            <div id="origin1">
-                <input type="text" name="task_subtask1" id="task_subtask_q"><br>
-            </div>
-            <div class="put_here">
-
-            </div>
-
-            <input type="button" value="Добавить еще подзадачу" id="add_more_tasks">
-
-
-            <input type="submit" value="Назначить задачу">
-
-    </div>
 </form>
-
-<br><br>----ТЕСТ----<br><br>
-
-    <form action="{% url 'pattern_task_url' %}">
-        <input type="text" name="user_id" value="{{ client.id }}" hidden>
-        <button type="submit">валера</button>
-
-    </form>
-
-<br><br>----ТЕСТ----<br><br>
 <hr>
+<div>
+    {% for tas in client_activ_tasks %}
+    <button class="fortask" id="idfortas{{ tas.id }}">
+            {{ tas.title }}
+        </button>
+            <br>
+             <div id="forsubtask{{ tas.id }}" hidden>
+                {% for sub in tas.show_all %}
+                    {{ sub.title }}
+                 <br>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+</div>
+<br>
 
 
-<button class="client_activ_tasks">Показать активные задачи пользователя</button>
-    <div class="activ_tasks" name="activ_tasks" hidden>
-        {% for tas in client_activ_tasks %}
+
+
+<br>
+
+
+<button class="client_closed_tasks">Показать выполненные задачи</button>
+    <div class="closed_tasks" name="closed_tasks" hidden>
+        {% for tas in client_closed_tasks %}
 
         <button class="fortask" id="idfortas{{ tas.id }}">
             {{ tas.title }}
@@ -65,7 +58,7 @@
 
         $(document).ready(function () {
             let count = 2;
-            let tasks = $('.activ_tasks')
+            let tasks = $('.closed_tasks')
 
             $("#add_more_tasks").on("click", function () {
                 let origin ='<div id="origin1"><input type="text" name="task_subtask'+ count +'"id="task_subtask_q"><br></div>';
@@ -74,7 +67,7 @@
                 console.log(count);
             });
 
-            $('.client_activ_tasks').on('click', function () {
+            $('.client_closed_tasks').on('click', function () {
                 if( tasks.is(":hidden")){
                     $(tasks).show()
                 }
