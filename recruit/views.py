@@ -81,9 +81,13 @@ class ApplicantDet(View):
         applicant_user = Client.objects.get(id=id_a)
         resumes = applicant_user.cv_set.all()
         vacancies = Vacancy.objects.all()
+        user = applicant_user.user_client
+        user_id = user.id
+        user_activ_tasks = Tasks.objects.filter(user=user, status=False)
         return render(request, 'recruit/recruiter_applicant.html',
                       context={'applicant_user': applicant_user,
-                               'resumes': resumes, 'vacancies': vacancies})
+                               'resumes': resumes, 'vacancies': vacancies,
+                               'user_activ_tasks': user_activ_tasks})
 
     def post(self, request, id_a):
         applicant_user = Client.objects.get(id=id_a)
@@ -372,9 +376,9 @@ def check_mes(request):
 
 
 class pattern_task(View):
-
+    '''Назначение новых и шаблонных задач рекрутером-клиенту.'''
     def get(self, request):
-        client_id = request.GET['user_id'] # id КЛИЕНТА
+        client_id = request.GET['user_id']
         pattern_tasks = RecruitPatternClient.objects.all()
         check = 1
         client_ac = Client.objects.get(id=client_id)

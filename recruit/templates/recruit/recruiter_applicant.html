@@ -1,17 +1,14 @@
 {% extends 'recruit/recruit_main_template.html' %}
 
 {% block title %}
-    {{applicant_user.user_client.first_name}} {{ applicant_user.user_client.last_name }}
+    {{ applicant_user.user_client.first_name }} {{ applicant_user.user_client.last_name }}
 {% endblock %}
 
 {% block content %}
-    <div class="p-sm-5 pt-sm-1">
-        <div class="btn-group mr-2" role="group" aria-label="First group">
-            <a href="{{ applicant_user.get_tasks_url }}" class="btn btn-secondary"> Собеседования клиента </a>
-            <br>
-            <a href="{{ applicant_user.get_add_client_task }}" class="btn btn-secondary"> Задачи клиента </a>
-        </div>
-    </div>
+    <style>
+        .applicant-content {
+
+
 
     <div class="p-sm-5 pt-sm-1">
         <h2 class="mb-5"> {{ applicant_user.user_client.last_name }} {{ applicant_user.user_client.first_name }} {{ applicant_user.patronymic }}</h2>
@@ -78,26 +75,212 @@
                         </form>
 
 
+        .applicant_btn {
+            font-size: 20px;
+            text-decoration: none;
+            color: white;
+            background-color: #213d4d;
+            margin-right: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s linear;
+        }
+
+        .applicant_btn:hover {
+            background-color: #8D7171;
+        }
+
+        .add_offer {
+            text-decoration: none;
+            color: white;
+            background-color: #213d4d;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s linear;
+        }
+
+        .add_offer:hover {
+            background-color: #8D7171;
+        }
+
+        #popup {
+            height: 100%;
+            width: 100%;
+            background: rgba(179,179,179, .5);
+            min-height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+
+        }
+
+        .popup-content{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 350px;
+            background: white;
+            opacity: 1;
+            border-radius: 10px;
+
+        }
+        .content-title{
+                font-size: 20px;
+                font-weight: bold;
+            }
+        .close{
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            text-decoration: none;
+            width: 20px;
+            height: 20px;
+            background: #213d4d;
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            transition: all 0.3s linear;
+        }
+
+        .close:hover {
+            background-color: #8D7171;
+        }
+
+        .comeback{
+            margin-left: 50px;
+            width: 100px;
+            text-decoration: none;
+            color: white;
+            background-color: #213d4d;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s linear;
+        }
+
+        .comeback:hover {
+            background-color: #8D7171;
+        }
+
+
+        .login-form{
+            margin: 0 70px 40px;
+            float: left;
+        }
+
+        .form-group{
+            margin-top: 15px ;
+            clear:both;
+            text-align:right;
+        }
+
+        label{
+        float:left;
+        padding-top: 20px;
+        padding-right: 25px;
+        padding-left: 50px;
+        color: #414141;
+        font-size: 20px;
+        font-family:open sans,sans-serif;
+        font-weight: bold;
+}
+
+    .btns-footer{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 400px;
+        margin:0 auto ;
+    }
+
+    .popup-btn{
+        text-decoration: none;
+        background: #213d4d;
+        outline: none;
+        border: none;
+        padding: 10px;
+        color: white;
+        border-radius: 5px;
+        transition: all 0.3s linear;
+    }
+
+    .popup-btn:hover {
+            background-color: #8D7171;
+        }
+
+
+    </style>
+
+    <div class="applicant-content">
+        <div class="btns">
+            <a class="applicant_btn" href="{{ applicant_user.get_tasks_url }}"> Собеседования клиента </a>
+            <br><br>
+            <div>
+                {% for activ_task in user_activ_tasks %}
+                    {{  activ_task.title }}
+                    <br>
+                {%  endfor %}
+
+            </div>
+            <a class="applicant_btn" href="{{ applicant_user.get_add_client_task }}">Побробнее</a>
+        </div>
+
+
+        <div>
+            <h2> {{ applicant_user.user_client.last_name }} {{ applicant_user.user_client.first_name }} {{ applicant_user.patronymic }}</h2>
+            {% for cv in applicant_user.cv_set.all %}
+                {{ cv }} <br>
+            {% endfor %}
+            <a class="add_offer" href="javascript:PopUpShow()">+ Добавить предложение</a>
+
+        </div>
+            <div id="popup">
+                <div class="popup-content">
+                    <h5 class="content-title"> Данные вакансии </h5>
+                    <a class="close" href="javascript:PopUpHide()">x</a>
+                    <form action="{{ applicant_user.get_absolute_url }}" method="post">
+                        {% csrf_token %}
+
+                    <div class="login-form">
+                        <div class="form-group">
+                            <label for="sel_resume">Доступные резюме:</label>
+                            <select size="3" name="id_cv" id="sel_resume">
+                                <option disabled>Выберите резюме пользователя</option>
+                                {% for resume in resumes %}
+                                    <option value="{{ resume.id }}">{{ resume }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sel_resume">Доступные вакансии:</label>
+                            <select size="3" name="id_v" id="sel_vacancy" multiple>
+                                <option disabled>Выберите подходящие ваканции</option>
+                                {% for vacancy in vacancies %}
+                                    <option value="{{ vacancy.id }}">{{ vacancy }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
+
+                    </form>
+                     <div class="btns-footer">
+                            <button class="popup-btn" type="reset">Очистить</button>
+                            <a class="popup-btn" href="javascript:PopUpHide()">Закрыть</a>
+                            <button class="popup-btn" type="submit" value="{{ vacancy.id }}" name="id_vac">Отправить</button>
+                     </div>
                 </div>
             </div>
-        </div>
+
         <!-- end Modal-->
 
 
-
-        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-
-            <div class="btn-group mr-2" role="group" aria-label="First group">
-                <a href="{% url 'base_of_clients' %}" class="btn btn-secondary">Назад</a>
-            </div>
-
-        </div>
+        <a class='comeback' href="{% url 'base_of_clients' %}">Вернуться</a>
 
     </div>
 
-
-<script>/*
+    <script>/*
 $('document').ready(function () {
     var first = { first_flag }}
     var second = { second_flag }}
@@ -106,30 +289,43 @@ $('document').ready(function () {
 
 
     /*actions for buttons*/
-   /* $('.accept').on('click',function () {
-        var id = $(this).attr('id');
-        $.ajax({'url':'/client/accept_reject/',
-                'data':{'flag':'accept',"id_v":id},
-                success:function (data) {
-                    console.log(data);
-                    $('#first').attr('hidden', true)
-                    $('#second').attr('hidden', false)
-                }})
+    /* $('.accept').on('click',function () {
+         var id = $(this).attr('id');
+         $.ajax({'url':'/client/accept_reject/',
+                 'data':{'flag':'accept',"id_v":id},
+                 success:function (data) {
+                     console.log(data);
+                     $('#first').attr('hidden', true)
+                     $('#second').attr('hidden', false)
+                 }})
 
-    });
-    $('.reject').on('click',function () {
-        var id = $(this).attr('id');
-        $.ajax({'url':'/client/accept_reject/',
-                'data':{'flag':'reject','id_v':id},
-                success:function (data) {
-                    console.log(data)
-                    $('#first').attr('hidden', false)
-                    $('#second').attr('hidden', true)
-                }})
+     });
+     $('.reject').on('click',function () {
+         var id = $(this).attr('id');
+         $.ajax({'url':'/client/accept_reject/',
+                 'data':{'flag':'reject','id_v':id},
+                 success:function (data) {
+                     console.log(data)
+                     $('#first').attr('hidden', false)
+                     $('#second').attr('hidden', true)
+                 }})
 
-    });
-}) */
-
+     });
+ }) */
+$(document).ready(function () {
+    //Скрыть PopUp при загрузке страницы
+    PopUpHide();
+});
+//Функция отображения PopUp
+function PopUpShow() {
+    $("#popup").show();
+    document.body.style.overflow = "hidden";
+}
+//Функция скрытия PopUp
+function PopUpHide() {
+    $("#popup").hide();
+    document.body.style.overflow = "auto";
+}
     </script>
 {% endblock %}
 
