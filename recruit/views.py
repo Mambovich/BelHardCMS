@@ -1,7 +1,6 @@
 from time import perf_counter
 from collections import defaultdict
 
-from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import EmailMessage
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
@@ -36,10 +35,8 @@ from .models import *  # TODO fix *
 as they make it unclear which names are present in the namespace, 
 confusing both readers and many automated tools. """
 
-user = get_user_model()
 
 # There is Poland's views #
-@user_passes_test(recruit_check, login_url='login')
 def recruit_main_page(request):  # TeamRome
     recruit_instance = recruit_check(request.user)
     response = {'recruit_img': load_client_img(recruit_instance),
@@ -48,11 +45,11 @@ def recruit_main_page(request):  # TeamRome
     return render(request, template_name='recruit/recruit_main_template.html',
                   context=response)
 
-@user_passes_test(recruit_check, login_url='login')
+
 def recruiter_base(request):
     return render(request, template_name='recruit/recruiter_base.html', )
 
-@user_passes_test(recruit_check, login_url='login')
+
 def base_of_applicants(request):
     # applicants = Client.objects.all()
     own_status = 'all'
@@ -72,7 +69,6 @@ def base_of_applicants(request):
 
 
 class ApplicantDet(View):
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, id_a):
         applicant_user = Client.objects.get(id=id_a)
         resumes = applicant_user.cv_set.all()
@@ -85,7 +81,6 @@ class ApplicantDet(View):
                                'resumes': resumes, 'vacancies': vacancies,
                                'user_activ_tasks': user_activ_tasks})
 
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request, id_a):
         applicant_user = Client.objects.get(id=id_a)
         response = request.POST
@@ -104,7 +99,6 @@ class ApplicantDet(View):
 
 
 class CreateJobInterview(View):
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, id_a):
         applicant_user = Client.objects.get(id=id_a)
         if CV.objects.filter(client_cv=applicant_user):
@@ -119,7 +113,6 @@ class CreateJobInterview(View):
                       context={'applicant_user': applicant_user,
                                'accepted_vacancies': accepted_vacancies})
 
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request, id_a):
         applicant_user = Client.objects.get(id=id_a)
         response = request.POST
@@ -156,7 +149,6 @@ class CreateJobInterview(View):
 
 
 class EditJobInterview(View):
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request, id_a):
         applicant_user = Client.objects.get(id=id_a)
         response = request.POST
@@ -192,7 +184,6 @@ class EditJobInterview(View):
 
 
 class DelJobInterview(View):
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request, id_a):
         applicant_user = Client.objects.get(id=id_a)
         j = JobInterviews.objects.get(id=request.POST['id_job'])
@@ -201,13 +192,11 @@ class DelJobInterview(View):
 
 
 class Vacancies(View):
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request):
         vacancies = Vacancy.objects.all()
         return render(request, 'recruit/recruiter_vacancies.html',
                       context={'vacancies': vacancies})
 
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request):
         response = request.POST
         v = Vacancy(
@@ -227,13 +216,11 @@ class Vacancies(View):
 
 
 class VacancyDet(View):
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, id_v):
         vacancy = Vacancy.objects.get(id=id_v)
         return render(request, 'recruit/recruiter_vacancy_detail.html',
                       context={'vacancy': vacancy})
 
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request, id_v):
         response = request.POST
         v = Vacancy.objects.get(id=id_v)
@@ -255,7 +242,6 @@ class VacancyDet(View):
 
 
 class DelVacancy(View):
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request, id_v):
         v = Vacancy.objects.get(id=request.POST['id_vac'])
         v.delete()
@@ -264,7 +250,7 @@ class DelVacancy(View):
 
 # End Poland's views #
 
-@user_passes_test(recruit_check, login_url='login')
+
 def recruit_chat(request):
     chat_list = Chat.objects.filter(members=request.user)
     for chat in chat_list:
@@ -275,7 +261,7 @@ def recruit_chat(request):
     return render(request=request, template_name='recruit/recruit_chat.html',
                   context=context)
 
-@user_passes_test(recruit_check, login_url='login')
+
 def get_messages(request):
     chat_id = (request.GET['chat_id'])
     chat = Chat.objects.get(id=chat_id)
@@ -296,7 +282,7 @@ def get_messages(request):
 
     return JsonResponse(send2, safe=False)
 
-@user_passes_test(recruit_check, login_url='login')
+
 def send_message(request):
     chat = Chat.objects.get(id=request.GET['chat_id'])
     mes = Message(chat=chat, author=request.user,
@@ -323,7 +309,7 @@ def send_message(request):
 
     return JsonResponse(send, safe=False)
 
-@user_passes_test(recruit_check, login_url='login')
+
 def chat_update(request):
     last_id = (request.GET['last_id'])
     chat = Chat.objects.get(id=request.GET['chat_id'])
@@ -342,7 +328,7 @@ def chat_update(request):
 
     return JsonResponse(send2, safe=False)
 
-@user_passes_test(recruit_check, login_url='login')
+
 def check_mes(request):
     chat = Chat.objects.filter(members=request.user)
     send = []
@@ -358,8 +344,6 @@ def check_mes(request):
 
 class pattern_task(View):
     '''Назначение новых и шаблонных задач рекрутером-клиенту.'''
-
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request):
         client_id = request.GET['user_id']
         pattern_tasks = RecruitPatternClient.objects.all()
@@ -374,7 +358,6 @@ class pattern_task(View):
                                                                                    'check': check,
                                                                                    'client_activ_tasks': client_activ_tasks})
 
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request):
         if 'form1' in request.POST:
             client_id = request.POST['user_id']
@@ -451,7 +434,6 @@ class pattern_task(View):
 
 
 class change_task(View):
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, id_t):
         task = Tasks.objects.get(id=id_t)
         sub_len = len(task.show_all)
@@ -459,7 +441,6 @@ class change_task(View):
                                                                                          'task': task,
                                                                                          'sub_len': sub_len})
 
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request, id_t):
         task = Tasks.objects.get(id=id_t)
         task_user = task.user
@@ -480,7 +461,7 @@ class change_task(View):
 
 
 class client_task_adding(View):
-    @user_passes_test(recruit_check, login_url='login')
+
     def get(self, request, id_a):
         client = Client.objects.get(id=id_a)
         client_user = client.user_client #ссылается на UserModel
@@ -491,7 +472,7 @@ class client_task_adding(View):
                                                                                             'client_activ_tasks':client_activ_tasks,
                                                                                             'client_closed_tasks': client_closed_tasks})
 
-    @user_passes_test(recruit_check, login_url='login')
+
     def post(self, request, id_a):
         client = Client.objects.get(id=id_a)
         client_user = client.user_client
@@ -519,7 +500,6 @@ class client_task_adding(View):
         return redirect(client.get_add_client_task())
 
 # список избранных клиентов, для рекрутера
-@user_passes_test(recruit_check, login_url='login')
 def favorites(request):
     own_status = Recruiter.objects.get(recruiter=request.user)
     # own_status = recruit
@@ -531,7 +511,6 @@ def favorites(request):
 
 
 # обработка избранного рекрутера
-@user_passes_test(recruit_check, login_url='login')
 def check_favor(request):
     client_id = (request.GET['client'])
     client = Client.objects.get(id=client_id)
@@ -564,7 +543,6 @@ def recruit_base(request):
 
 
 # функция поиска по списку клиентов, для рекрутера
-@user_passes_test(recruit_check, login_url='login')
 def client_filtration(request, own_status):
     recruit = Recruiter.objects.get(recruiter=request.user)
     search_request = request.GET.get('recruit_search', '')
@@ -608,7 +586,6 @@ def client_filtration(request, own_status):
 class RecruitProfile(TemplateView):  # TeamRome
     template_name = 'recruit/recruit_profile.html'
 
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, *args, **kwargs):
         recruit_instance = recruit_check(request.user)
         response = {'recruit_img': load_client_img(recruit_instance),
@@ -624,7 +601,6 @@ class RecruitProfile(TemplateView):  # TeamRome
 class RecruitEditMain(TemplateView):  # TeamRome
     template_name = 'recruit/edit_pages/recruit_edit_main.html'
 
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, *args, **kwargs):
         recruit_instance = recruit_check(request.user)
         response = {'recruit_img': load_client_img(recruit_instance),
@@ -632,7 +608,6 @@ class RecruitEditMain(TemplateView):  # TeamRome
                     }
         return render(request, self.template_name, response)
 
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request):
         recruit_instance = recruit_check(request.user)
         recruit_edit_page_post(recruit_instance, request)
@@ -642,7 +617,6 @@ class RecruitEditMain(TemplateView):  # TeamRome
 class RecruitEditExperience(TemplateView):  # TeamRome
     template_name = 'recruit/edit_pages/recruit_edit_experience.html'
 
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, *args, **kwargs):
         recruit_instance = recruit_check(request.user)
         response = {'recruit_img': load_client_img(recruit_instance),
@@ -650,7 +624,6 @@ class RecruitEditExperience(TemplateView):  # TeamRome
                     }
         return render(request, self.template_name, response)
 
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request):
         recruit_instance = recruit_check(request.user)
         recruit_experience_page_post(recruit_instance, request)
@@ -660,7 +633,6 @@ class RecruitEditExperience(TemplateView):  # TeamRome
 class RecruitEditEducation(TemplateView):  # TeamRome
     template_name = 'recruit/edit_pages/recruit_edit_education.html'
 
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, *args, **kwargs):
         recruit_instance = recruit_check(request.user)
         response = {'recruit_img': load_client_img(recruit_instance),
@@ -668,7 +640,6 @@ class RecruitEditEducation(TemplateView):  # TeamRome
                     }
         return render(request, self.template_name, response)
 
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request):
         recruit_instance = recruit_check(request.user)
         recruit_education_page_post(recruit_instance, request)
@@ -678,7 +649,6 @@ class RecruitEditEducation(TemplateView):  # TeamRome
 class RecruitEditSkills(TemplateView):  # TeamRome
     template_name = 'recruit/edit_pages/recruit_skills.html'
 
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, *args, **kwargs):
         recruit_instance = recruit_check(request.user)
         response = {'recruit_img': load_client_img(recruit_instance),
@@ -686,7 +656,6 @@ class RecruitEditSkills(TemplateView):  # TeamRome
                     }
         return render(request, self.template_name, response)
 
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request):
         recruit_instance = recruit_check(request.user)
         skills_page_post(recruit_instance, request)
@@ -696,7 +665,6 @@ class RecruitEditSkills(TemplateView):  # TeamRome
 class RecruitEditPhoto(TemplateView):  # TeamRome
     template_name = 'recruit/edit_pages/recruit_photo.html'
 
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, *args, **kwargs):
         recruit_instance = recruit_check(request.user)
         response = {'recruit_img': load_client_img(recruit_instance),
@@ -705,7 +673,6 @@ class RecruitEditPhoto(TemplateView):  # TeamRome
         return render(request=request, template_name=self.template_name,
                       context=response)
 
-    @user_passes_test(recruit_check, login_url='login')
     def post(self, request):
         recruit_instance = recruit_check(request.user)
         photo_page_post(recruit_instance, request)
@@ -715,7 +682,6 @@ class RecruitEditPhoto(TemplateView):  # TeamRome
 class RecruitShowSkills(TemplateView):  # TeamRome
     template_name = 'recruit/show/show_skills.html'
 
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, *args, **kwargs):
         recruit_instance = recruit_check(request.user)
         response = {'recruit_img': load_client_img(recruit_instance),
@@ -728,7 +694,6 @@ class RecruitShowSkills(TemplateView):  # TeamRome
 class RecruitShowEducation(TemplateView):  # TeamRome
     template_name = 'recruit/show/show_education.html'
 
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, *args, **kwargs):
         recruit_instance = recruit_check(request.user)
         response = {'recruit_img': load_client_img(recruit_instance),
@@ -740,12 +705,10 @@ class RecruitShowEducation(TemplateView):  # TeamRome
 class RecruitShowExperience(TemplateView):  # TeamRome
     template_name = 'recruit/show/show_experience.html'
 
-    @user_passes_test(recruit_check, login_url='login')
     def get(self, request, *args, **kwargs):
         recruit_instance = recruit_check(request.user)
         response = {'recruit_img': load_client_img(recruit_instance),
                     "data": recruit_experience_page_get(recruit_instance),
                     }
         return render(request, self.template_name, response)
-
 
