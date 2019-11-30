@@ -12,6 +12,8 @@ UserModel = get_user_model()
 
 
 class Recruiter(models.Model):  # TeamRome
+    class Meta:
+        permissions = (("can_use_page", "page permission"),)
     recruiter = models.OneToOneField(UserModel, on_delete=models.CASCADE)
 
     patronymic = models.CharField(max_length=100, verbose_name='Отчество', blank=True, null=True)
