@@ -42,13 +42,9 @@ from client.utils_for_mixins import ObjectResumeMixin
 """ PEP 8: Wildcard imports (from <module> import *) should be avoided, 
 as they make it unclear which names are present in the namespace, 
 confusing both readers and many automated tools. """
+user = get_user_model()
 
-
-def check_client(user):
-    return user.is_authenticated
-
-
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def client_main_page(request):  # !!!!!!!!!!!!!!!!!!!!!Alert
     response = csrf(request)
     # Poland
@@ -87,7 +83,7 @@ def client_main_page(request):  # !!!!!!!!!!!!!!!!!!!!!Alert
 class ClientProfile(TemplateView):  # TeamRome
     template_name = 'client/client_profile.html'
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, *args, **kwargs):
         client_instance = client_check(request.user)
         response = {'client_img': load_client_img(client_instance),
@@ -104,7 +100,7 @@ class ClientProfile(TemplateView):  # TeamRome
 class ClientEditMain(TemplateView):  # TeamRome
     template_name = 'client/edit_forms/client_edit_main.html'
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, *args, **kwargs):
         client_instance = client_check(request.user)
         response = {'client_img': load_client_img(client_instance),
@@ -113,7 +109,7 @@ class ClientEditMain(TemplateView):  # TeamRome
         return render(request=request, template_name=self.template_name,
                       context=response)
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         client_instance = client_check(request.user)
         edit_page_post(client_instance, request)
@@ -123,7 +119,7 @@ class ClientEditMain(TemplateView):  # TeamRome
 class ClientEditSkills(TemplateView):  # TeamRome
     template_name = 'client/edit_forms/client_edit_skills.html'
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, *args, **kwargs):
         client_instance = client_check(request.user)
         response = {'client_img': load_client_img(client_instance),
@@ -132,7 +128,7 @@ class ClientEditSkills(TemplateView):  # TeamRome
         return render(request=request, template_name=self.template_name,
                       context=response)
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         client_instance = client_check(request.user)
         if client_instance:
@@ -152,7 +148,7 @@ class ClientEditPhoto(TemplateView):  # TeamRome
         return render(request=request, template_name=self.template_name,
                       context=response)
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         client_instance = client_check(request.user)
         photo_page_post(client_instance, request)
@@ -162,7 +158,7 @@ class ClientEditPhoto(TemplateView):  # TeamRome
 class ClientEditCv(TemplateView):  # TeamRome
     template_name = 'client/edit_forms/client_edit_cv.html'
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, *args, **kwargs):
         client_instance = client_check(request.user)
         response = {'client_img': load_client_img(client_instance),
@@ -172,7 +168,7 @@ class ClientEditCv(TemplateView):  # TeamRome
                       response)  # а здесь он залетел в соответствующий
         # темплейт для заполнения полей
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         client_instance = client_check(request.user)
         cv_page_post(client_instance, request)
@@ -182,7 +178,7 @@ class ClientEditCv(TemplateView):  # TeamRome
 class ClientEditEducation(TemplateView):  # TeamRome
     template_name = 'client/edit_forms/client_edit_education.html'
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, *args, **kwargs):
         client_instance = client_check(request.user)
         response = {'client_img': load_client_img(client_instance),
@@ -190,7 +186,7 @@ class ClientEditEducation(TemplateView):  # TeamRome
                     }
         return render(request, self.template_name, response)
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         client_instance = client_check(request.user)
         education_page_post(client_instance, request)
@@ -200,7 +196,7 @@ class ClientEditEducation(TemplateView):  # TeamRome
 class ClientEditExperience(TemplateView):  # TeamRome
     template_name = 'client/edit_forms/client_edit_experience.html'
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, *args, **kwargs):
         client_instance = client_check(request.user)
         response = {'client_img': load_client_img(client_instance),
@@ -208,7 +204,7 @@ class ClientEditExperience(TemplateView):  # TeamRome
                     }
         return render(request, self.template_name, response)
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         client_instance = client_check(request.user)
         experience_page_post(client_instance, request)
@@ -216,7 +212,7 @@ class ClientEditExperience(TemplateView):  # TeamRome
 
 
 class MessagesView(View):
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request):
         try:
             chat = Chat.objects.get(members=request.user)
@@ -239,7 +235,7 @@ class MessagesView(View):
         context['client_img'] = load_client_img(client_instance)
         return render(request, 'client/client_chat.html', context)
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         form = MessageForm(data=request.POST)
         chat = Chat.objects.get(members=request.user)
@@ -252,7 +248,7 @@ class MessagesView(View):
         return redirect(reverse('contact_with_centre'))
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def answer_create(request, pk):
     opinion = get_object_or_404(Opinion, id=pk)
     answer = Answer.objects.filter(pk=pk)
@@ -269,15 +265,14 @@ def answer_create(request, pk):
     return render(request, 'opinion/answer_create.html',
                   context={'form': form, 'opinion': opinion, "answer": answer})
 
-
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def opinion_list(request):
     opinion = Opinion.objects.all()
     return render(request, 'opinion/index.html', context={'opinion': opinion})
 
 
 class OpinionCreate(View):
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request):
         opinions = Opinion.objects.all()
         form = OpinionForm()
@@ -287,7 +282,7 @@ class OpinionCreate(View):
                                'client_img': load_client_img(client_instance),
                                'opinions': opinions})
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         opinions = Opinion.objects.all()
         form = OpinionForm(request.POST)
@@ -304,27 +299,27 @@ class OpinionCreate(View):
                                'opinions': opinions})
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def opinion_detail(request, pk):
     opinion = get_object_or_404(Opinion, pk=pk)
     return render(request, 'opinion/opinion_detail.html', {'opinion': opinion})
 
 
 class OpinionDelete(View):
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, pk):
         opinion = Opinion.objects.filter(pk=pk)
         return render(request, 'opinion/opinion_delete.html',
                       context={'opinion': opinion})
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request, pk):
         opinion = Opinion.objects.filter(pk=pk)
         opinion.delete()
         return redirect(reverse('opinion_list'))
 
 
-
+@user_passes_test(client_check, login_url='login')
 def client_login(request):  # ввести логин/пароль -> зайти в систему
     res = csrf(request)
     res['url'] = 'login'
@@ -363,12 +358,12 @@ def client_login(request):  # ввести логин/пароль -> зайти
         u.save()
         return redirect('client')
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def client_logout(request):  # выйти из системы, возврат на стартовую страницу
     auth.logout(request)
     return redirect(to='login')  # вставить редирект куда требуется
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def tasks(request):
     task = Tasks.objects.filter(user=request.user, status=False)
     task_false = Tasks.objects.filter(user=request.user,
@@ -380,7 +375,7 @@ def tasks(request):
                                                          'client_img': load_client_img(
                                                              client_instance)})
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def check_subtask(request):
     sub_id = request.GET['sub_id']
     subtask = SubTasks.objects.get(id=sub_id)
@@ -410,7 +405,7 @@ def check_subtask(request):
     return HttpResponse()
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def checktask(request):
     id = (request.GET['id'])
     task = Tasks.objects.get(id=id)
@@ -429,7 +424,7 @@ def checktask(request):
     return HttpResponse(task)
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def checknotifications(request):
     client = get_object_or_404(Client, user_client=request.user)
     chat = Chat.objects.get(members=request.user)
@@ -450,7 +445,7 @@ def checknotifications(request):
     return HttpResponse(data)
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def settings_menu(request):
     settings = Settings.objects.get(user=request.user)
     context = {'settings': settings, }
@@ -460,7 +455,7 @@ def settings_menu(request):
                   context=context)
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def set_settings(request):
     setting = request.GET['setting']
     status = request.GET['state'] == 'true'
@@ -492,7 +487,7 @@ def set_settings(request):
     return HttpResponse(settings)
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def chat_update(request):
     last_id = (request.GET['last_id'])
     chat = Chat.objects.get(members=request.user)
@@ -517,7 +512,7 @@ def chat_update(request):
 
 #  There's a lot of work to remove all bugs  #
 class VacancyDetail(View):
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, id_v):
         client = get_object_or_404(Client, user_client=request.user)
         vacancy = get_object_or_404(Vacancy, id=id_v)
@@ -542,7 +537,7 @@ class VacancyDetail(View):
 
 
 class ResumesList(View):
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request):
         client = get_object_or_404(Client, user_client=request.user)
         resumes = CV.objects.filter(client_cv=client)
@@ -564,7 +559,7 @@ class RejectedVacancies(ObjectResumeMixin, View):  # Look utils_for_mixins.py
     template = 'client/client_rejected_vacancies.html'
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def accept_reject(request):
     client = get_object_or_404(Client, user_client=request.user)
     if request.GET['flag'] == 'accept' and \
@@ -620,7 +615,7 @@ def accept_reject(request):
         return HttpResponse('reject_server')
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def help_list(request):
     faqs = Help.objects.all()
     client_instance = client_check(request.user)
@@ -629,7 +624,7 @@ def help_list(request):
                            'client_img': load_client_img(client_instance)})
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def viewed(request):
     if request.GET['action'] == 'clear':
         client = get_object_or_404(Client, user_client=request.user)
@@ -640,7 +635,7 @@ def viewed(request):
         return HttpResponse('cleared')
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def interviews_list(request):
     client = get_object_or_404(Client, user_client=request.user)
     interviews = JobInterviews.objects.filter(client=client, status=False)
@@ -657,7 +652,7 @@ def interviews_list(request):
                            'client_img': load_client_img(client_instance)})
 
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def checkinterviews(request):
     id = request.GET['id']
     interviews = JobInterviews.objects.get(id=id)
@@ -671,7 +666,7 @@ def checkinterviews(request):
     interviews.save()
     return HttpResponse(interviews)
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def admin_jobinterviews(request):  # for admin panel
     client = Client.objects.get(id=request.GET['id_client'])
     resumes = CV.objects.filter(client_cv=client)
@@ -679,7 +674,7 @@ def admin_jobinterviews(request):  # for admin panel
     resumes = json.dumps(resumes, ensure_ascii=False)
     return HttpResponse(resumes)
 
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 # PDF upload
 def upload(request):
     context = {}
@@ -692,7 +687,7 @@ def upload(request):
 
 
 # PDF Parsing
-@user_passes_test(check_client, login_url='login')
+@user_passes_test(client_check, login_url='login')
 def parsing():
     raw = parser.from_file('Astapenka Dima.pdf')
     text = (raw['content'])
@@ -728,7 +723,7 @@ def parsing():
 class ClientShowSkills(TemplateView):  # TeamRome
     template_name = 'client/show/show_skills.html'
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, *args, **kwargs):
         client_instance = client_check(request.user)
         response = {'client_img': load_client_img(client_instance),
@@ -737,7 +732,7 @@ class ClientShowSkills(TemplateView):  # TeamRome
         return render(request=request, template_name=self.template_name,
                       context=response)
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         pass
 
@@ -745,7 +740,7 @@ class ClientShowSkills(TemplateView):  # TeamRome
 class ClientShowEducation(TemplateView):  # TeamRome
     template_name = 'client/show/show_education.html'
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, *args, **kwargs):
         client_instance = client_check(request.user)
         response = {'client_img': load_client_img(client_instance),
@@ -753,7 +748,7 @@ class ClientShowEducation(TemplateView):  # TeamRome
                     }
         return render(request, self.template_name, response)
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         pass
 
@@ -761,7 +756,7 @@ class ClientShowEducation(TemplateView):  # TeamRome
 class ClientShowExperience(TemplateView):  # TeamRome
     template_name = 'client/show/show_experience.html'
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, *args, **kwargs):
         client_instance = client_check(request.user)
         response = {'client_img': load_client_img(client_instance),
@@ -769,7 +764,7 @@ class ClientShowExperience(TemplateView):  # TeamRome
                     }
         return render(request, self.template_name, response)
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         pass
 
@@ -777,7 +772,7 @@ class ClientShowExperience(TemplateView):  # TeamRome
 class ClientShowCv(TemplateView):  # TeamRome
     template_name = 'client/show/show_cv.html'
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def get(self, request, *args, **kwargs):
         client_instance = client_check(request.user)
         response = {'client_img': load_client_img(client_instance),
@@ -785,9 +780,6 @@ class ClientShowCv(TemplateView):  # TeamRome
                     }
         return render(request, self.template_name, response)
 
-    @user_passes_test(check_client, login_url='login')
+    @user_passes_test(client_check, login_url='login')
     def post(self, request):
         pass
-
-
-
