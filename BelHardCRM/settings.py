@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'rtd@#1xwt_mhm7(0@aakxg#jjfv72)^+)=k!(nu^4yh+_p)-qf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -78,14 +78,25 @@ WSGI_APPLICATION = 'BelHardCRM.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'asyncio$BelHardDataBase',
-        'USER': 'asyncio',
-        'PASSWORD': 'useruser',
-        'HOST': 'asyncio.mysql.pythonanywhere-services.com',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'TEST': {
+            'NAME': os.path.join(BASE_DIR, 'test_db.sqlite3'),
+        },
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'asyncio$BelHardDataBase',
+#         'USER': 'asyncio',
+#         'PASSWORD': 'useruser',
+#         'HOST': 'asyncio.mysql.pythonanywhere-services.com',
+#         'PORT': '3306',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -113,7 +124,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': r'BelHardCMS/debug.log',  # при релизе сделать путь для хранения логов на сервере
+            'filename': 'debug.log',  # при релизе сделать путь для хранения логов на сервере
         },
     },
     'loggers': {
@@ -153,7 +164,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'recruit/static/recruit/'),
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'client/media/')
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'client/static/client/'),
+#     os.path.join(BASE_DIR, 'recruit/static/recruit/'),
+# ]
+#
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+#
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')

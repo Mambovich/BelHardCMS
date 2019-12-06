@@ -30,7 +30,7 @@ from recruit.models import (Recruiter)
 from datetime import datetime
 from client.models import *
 from .models import * #TODO fix *
-from .forms import RecruitReportsClientsForm
+# from .forms import RecruitReportsClientsForm
 
 from .models import *  # TODO fix *
 
