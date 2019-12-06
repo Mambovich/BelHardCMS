@@ -15,23 +15,23 @@ class Recruiter(models.Model):  # TeamRome
     recruiter = models.OneToOneField(UserModel, on_delete=models.CASCADE,
                                      null=True, blank=True)
     patronymic = models.CharField(max_length=100, verbose_name='Отчество')
-    sex = models.ForeignKey(Sex, on_delete=models.SET_NULL, null=True,
-                            blank=True)
+    #sex = models.ForeignKey(Sex, on_delete=models.SET_NULL, null=True,
+                            # blank=True)
 
     date_born = models.DateField(null=True, blank=True)
-    r_citizenship = models.ForeignKey(Citizenship,
-                                      related_name='r_citizenship',
-                                      on_delete=models.SET_NULL,
-                                      null=True, blank=True)
-    family_state = models.ForeignKey(FamilyState, on_delete=models.SET_NULL,
-                                     null=True, blank=True)
-    children = models.ForeignKey(Children, on_delete=models.SET_NULL,
-                                 null=True, blank=True)
-    r_country = models.ForeignKey(Citizenship, related_name='r_country',
-                                  on_delete=models.SET_NULL, blank=True,
-                                  null=True)
-    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True,
-                             blank=True)
+    # #r_citizenship = models.ForeignKey(Citizenship,
+    #                                   related_name='r_citizenship',
+    #                                   on_delete=models.SET_NULL,
+    #                                   null=True, blank=True)
+    # family_state = models.ForeignKey(FamilyState, on_delete=models.SET_NULL,
+    #                                  null=True, blank=True)
+    # children = models.ForeignKey(Children, on_delete=models.SET_NULL,
+    #                              null=True, blank=True)
+    # r_country = models.ForeignKey(Citizenship, related_name='r_country',
+    #                               on_delete=models.SET_NULL, blank=True,
+    #                               null=True)
+    # city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True,
+    #                          blank=True)
     street = models.CharField(max_length=100, verbose_name='Улица', null=True,
                               blank=True)
     house = models.CharField(max_length=100, verbose_name='Номер дома',
@@ -43,8 +43,8 @@ class Recruiter(models.Model):  # TeamRome
     link_linkedin = models.URLField(max_length=200, null=True, blank=True)
     skype = models.CharField(max_length=100, null=True, blank=True)
     img = models.ImageField(blank=True, null=True)
-    state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True,
-                              blank=True)
+    # state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True,
+    #                           blank=True)
     reports_clients = models.ForeignKey(to='RecruitReportsClients', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
@@ -58,8 +58,8 @@ class RecruitExperience(models.Model):  # TeamRome
 
     name = models.CharField(max_length=100, null=True, blank=True,
                             verbose_name='organisation')
-    sphere = models.ManyToManyField(Sphere,
-                                    verbose_name='sphere')  # ??? not more 3
+    # sphere = models.ManyToManyField(Sphere,
+    #                                 verbose_name='sphere')  # ??? not more 3
     position = models.CharField(max_length=100, null=True, blank=True,
                                 verbose_name='position')
     start_date = models.DateField(null=True, blank=True,
@@ -151,9 +151,9 @@ class RecruitReportsClients(models.Model):  #TeamPoland
     recruit = models.ForeignKey(Recruiter, on_delete=models.CASCADE)
     starting_period = models.DateField(null=True, blank=True, verbose_name='Начальный период')
     end_period = models.DateField(blank=True, null=True, verbose_name='Конечный период')
-    specialty = models.ForeignKey(Education, on_delete=models.CASCADE, blank=True, verbose_name='Специальность')
+    # specialty = models.ForeignKey(Education, on_delete=models.CASCADE, blank=True, verbose_name='Специальность')
     generate_a_report = models.BooleanField(default=False, verbose_name='Сформировать отчёт')
-    cv_activation_date = models.ForeignKey(CV, on_delete=models.SET_NULL, blank=True, null=True)
+    #cv_activation_date = models.ForeignKey(CV, on_delete=models.SET_NULL, blank=True, null=True)
     date_of_employment = models.DateField(blank=True, null=True, verbose_name='Дата трудоустройства')
 
 
